@@ -40,6 +40,11 @@ class Sing_In extends HTMLElement {
     get MailElement() {
         return this.ContainerElement.querySelector("#iM");
     }
+    get RemoveElement() {
+        return this.ContainerElement.querySelector("#bRemove");
+    }
+
+
 
 
 
@@ -57,30 +62,58 @@ class Sing_In extends HTMLElement {
         let that = this;
 
         getTemplate("./components/SignIn/template.html").then((html) => {
-            /*  document.querySelector('template').innerHTML += html;
-             const template = document.querySelector("template");
-             //getElementsByTagName('log-in')
-             const clone = document.importNode(
-                 template.content.getElementById("sign-in"),
-                 true
-             ); */
-            //this.appendChild(clone);
-            this.innerHTML += html;
 
-            this.setVisibility(this.attributes['visible'].value === 'true');
+            that.innerHTML += html;
+
+            //APPLY ATTR
+            that.setVisibility(that.attributes['visible'].value === 'true');
+
+            //MODEL EVENTS
             modelservice$.subscribe('status', function name(params) {
+
                 console.log('Status changed (Singin) : ' + params);
-                if (params == "1")
+                if (params == EnumStatus.SigIn)
                     that.setVisibility(true);
                 else that.setVisibility(false);
             });
-            this.BackElement.addEventListener("click", function() {
 
-                modelservice$.publish('status', "0");
-                this.setVisibility(this.attributes['visible'].value === 'true');
+            //BUTTON EVENTS
+            that.BackElement.addEventListener("click", function() {
+
+                modelservice$.publish('status', EnumStatus.Login);
+
 
             });
-            this.SaveElement.addEventListener("click", function() {
+
+            that.RemoveElement.addEventListener("click", function() {
+                let user = {
+                    username: that.UserNameElement.value,
+                    password: that.PasswordElement.value,
+
+                };
+                modelservice$.publish('loading', true);
+                deleteUser(user).then(c => {
+                    if (c.e) {
+                        console.log("Not Removed");
+                        that.ErrorElement.classList.add('label--error--display');
+                        that.ErrorElement.innerHTML = c.e;
+                        modelservice$.publish('loading', false);
+
+                    } else {
+                        console.log("Removed!");
+                        that.ErrorElement.classList.remove('label--error--display');
+                        modelservice$.publish('status', EnumStatus.Login);
+                        modelservice$.publish('loading', false);
+                    }
+
+
+                });
+
+
+
+            });
+
+            that.SaveElement.addEventListener("click", function() {
 
                 if (that.UserNameElement.checkValidity() && that.PasswordElement.checkValidity() && that.FirstNameElement.checkValidity() && that.LastNameElement.checkValidity() && that.MailElement.checkValidity())
                     that.signin(
@@ -93,7 +126,35 @@ class Sing_In extends HTMLElement {
                     );
                 else that.ErrorElement.classList.add("label--error--display");
             });
+            //
+
+            //INPUT EVENTS
+
+
+            that.PasswordElement.addEventListener("focusout", function() {
+                that.checkupdate(that);
+            });
+            that.UserNameElement.addEventListener("focusout", function() {
+                that.checkupdate(that);
+            });
+
+
+            //
+
         });
+    }
+
+    checkupdate(that) {
+        if (that.PasswordElement.value != '' && that.UserNameElement.value != '') {
+            authUser({ username: that.PasswordElement.value, password: that.UserNameElement.value }).then(c => {
+                if (c) {
+                    that.SaveElement.innerHTML = "UPDATE";
+                } else that.SaveElement.innerHTML = "SAVE";
+            });
+
+        } else {
+            that.SaveElement.innerHTML = "SAVE";
+        }
     }
     disconnectedCallback() {
         /*called when the element is disconnected from the page */
@@ -103,16 +164,41 @@ class Sing_In extends HTMLElement {
             document
                 .getElementById("lErrorS")
                 .classList.remove("label--error--display");
-            listUsers.push({
-                f: f,
-                u: u,
-                l: l,
-                p: p,
-                m: m,
-            });
-            console.log("Registered!");
+            /*   listUsers.push({
+                  f: f,
+                  u: u,
+                  l: l,
+                  p: p,
+                  m: m,
+              }); */
+            let user = {
+                username: u,
+                password: p,
+                firstname: f,
+                lastname: l,
+                email: m,
+            };
 
-            modelservice$.publish('status', "2");
+            modelservice$.publish('loading', true);
+            insertUser(user).then(c => {
+                if (c.e) {
+                    console.log("Not Registered!");
+                    that.ErrorElement.classList.add('label--error--display');
+                    that.ErrorElement.innerHTML = c.e;
+                    modelservice$.publish('loading', false);
+
+                } else {
+                    console.log("Registered!");
+                    that.ErrorElement.classList.remove('label--error--display');
+                    modelservice$.publish('loading', false);
+                    modelservice$.publish('status', EnumStatus.Login);
+                }
+
+
+            });
+
+
+
             //VisibilityState();
         } else {
             this.ErrorElement.classList.add("label--error--display");
@@ -120,7 +206,9 @@ class Sing_In extends HTMLElement {
     }
     refresh() {
         let that = this;
+
         that.UserNameElement.value = that.PasswordElement.value = that.FirstNameElement.value = that.LastNameElement.value = that.MailElement.value = '';
+        that.checkupdate(that);
     }
     setVisibility(v) {
 

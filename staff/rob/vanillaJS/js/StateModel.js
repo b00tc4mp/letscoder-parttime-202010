@@ -1,21 +1,25 @@
  var templates = {};
  var listUsers = [];;
- const modelservice$ = new pubSub();
- var current_user = {
-     f: '',
-     u: '',
-     l: '',
-     p: '',
-     m: ''
+ EnumStatus = {
+     DriknDecorer: 3,
+     Iframe: 4,
+     Login: 0,
+     SigIn: 1,
+     Wellcome: 2,
+
  };
 
- listUsers.push({
-     f: '1',
-     u: '1',
-     l: '1',
-     p: '1',
-     m: '1'
- });
+
+ const modelservice$ = new pubSub();
+ var current_user = {
+     fistname: "",
+     username: "",
+     lastname: "",
+     password: "",
+     email: "",
+ };
+
+
 
 
  // const modelservice$ = new ObservableOf(status)

@@ -11,14 +11,15 @@
         <!-- Here load templates for each control in order to load -->
 
     </template>
-    <div id="conTemp">
 
-    </div>
+    <log-in visible='true'></log-in>
+    <sign-in visible='false'></sign-in>
 
     <well-come arg='2' visible='false'></well-come>
-    <log-in visible='true'></log-in>
 
-    <sign-in visible='false'></sign-in>
+    <drink-decorator visible='false'></drink-decorator>
+    <i-frame visible='false' url="../../../src/html/marialunarillos/"></i-frame>
+    <i-loading visible='false'></i-loading>
 
     <script src="models/Decorator/js/Drink.js"></script>
     <script src="models/Decorator/js/Topping.js"></script>
@@ -27,7 +28,6 @@
     <script src="models/Decorator/js/Milk.js"></script>
     <script src="models/Decorator/js/Mokka.js"></script>
     <script src="models/Decorator/js/Soya.js"></script>
-
     <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
     <script src="js/Utils.js"></script>
     <script src="js/StateModel.js"></script>
@@ -36,7 +36,12 @@
     <script src="components/Login/Login.js"></script>
     <script src="components/SignIn/SignIn.js"></script>
     <script src="components/WellCome/WellCome.js"></script>
+    <script src="components/DrinkDecorator/DrinkDecorator.js"></script>
+    <script src="components/Iframe/Iframe.js"></script>
+    <script src="components/Loading/Loading.js"></script>
 
+    <script src="js/tests/LoginMethods.js"></script>
+    <script src="js/tests/Test.js"></script>
 </body>
 
 </html>

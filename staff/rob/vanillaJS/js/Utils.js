@@ -107,3 +107,109 @@ function ObservableOf(...data) {
 
     return { subscribe: this.subscribe }
 }
+
+async function getUser(user, token) {
+    if (typeof user !== 'object')
+        throw new TypeError('No es un objeto')
+
+    const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/', {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        method: 'GET'
+    });
+    const json = await response.json();
+    if (json.hasOwnProperty('error'))
+
+        return { e: json.error, t: '' }
+    else
+        return {
+            e: '',
+            t: json
+        }
+}
+
+//DELETE user+password,express, render side, server express rendering
+async function insertUser(user) {
+    if (typeof user !== 'object')
+        throw new TypeError('No es un objeto')
+
+    let aut = await authUser({
+        username: user.username,
+        password: user.password
+    });
+    let method = 'POST';
+    let headers = {
+        'Content-type': 'application/json'
+    };
+    if (aut) {
+        method = 'PATCH';
+        headers = {
+            'Content-type': 'application/json',
+            'Authorization': 'Bearer ' + aut
+        };
+        user = {
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email
+        }
+    }
+
+    const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/', {
+        headers: headers,
+        method: method,
+        body: JSON.stringify(user)
+    });
+    if (response.ok) {
+        return {
+            e: '',
+            t: aut
+        }
+    } else
+        return { e: response.statusText, t: '' }
+
+}
+
+async function authUser(user) {
+    if (typeof user !== 'object')
+        throw new TypeError('No es un objeto')
+
+    if (JSON.stringify(Object.keys(user).sort()) !== JSON.stringify(["username", "password"].sort())) throw new TypeError('Objeto con diferentes propiedades');
+
+
+    const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/auth/', {
+        headers: {
+            'Content-type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(user)
+    });
+    const json = await response.json();
+    let token = json.token;
+    return token;
+}
+async function deleteUser(user) {
+    if (typeof user !== 'object')
+        throw new TypeError('No es un objeto')
+
+    let aut = await authUser({
+        username: user.username,
+        password: user.password
+    });
+
+    if (!aut)
+        return { e: 'No user to remove.' };
+
+    const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/', {
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': 'Bearer ' + aut
+        },
+        method: 'DELETE',
+        body: JSON.stringify(user)
+    });
+    if (response.ok)
+        return { e: '', t: '' };
+    else return { e: response.statusText, t: '' }
+
+}

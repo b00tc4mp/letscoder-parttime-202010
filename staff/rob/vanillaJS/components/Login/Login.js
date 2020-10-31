@@ -1,18 +1,3 @@
-/*   const { Drink } = require('../../models/Decorator/Drink.ts');
-  const { Topping } = require('../../models/Decorator/Topping.ts');
-  const { Coffe } = require('../../models/Decorator/Coffe.ts');
-  const { Milk } = require('../../models/Decorator/Milk.ts');
-  const { Mokka } = require('../../models/Decorator/Mokka.ts');
-  const { Soya } = require('../../models/Decorator/Soya.ts'); */
-/* 
-import { Drink } from '../../models/Decorator/Drink.ts';
-import { Topping } from '../../models/Decorator/Topping.ts';
-import { Coffe } from '../../models/Decorator/Coffe.ts';
-import { Milk } from '../../models/Decorator/Milk.ts';
-import { Mokka } from '../../models/Decorator/Mokka.ts';
-import { Soya } from '../../models/Decorator/Soya.ts'; */
-
-
 class Log_In extends HTMLElement {
 
     get ContainerElement() {
@@ -43,14 +28,46 @@ class Log_In extends HTMLElement {
     }
 
 
-
     constructor() {
         super();
 
         /*called when the class is 
                 instantiated
                 */
+
+        //
+        let that = this;
+
+
     }
+
+
+
+    async callAPI(user, url) {
+
+        let r = await (new Promise((resolve, reject) => {
+            fetch(url, {
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(user)
+                })
+                .then((c) => {
+                    resolve(c.json());
+                });
+        })).then(c => {
+            return c
+        });
+
+        return r;
+
+
+
+    }
+
+
+
     connectedCallback() {
         /*called when the element is 
                  connected to the page.
@@ -61,28 +78,33 @@ class Log_In extends HTMLElement {
                  to move elements around
                 */
         let that = this;
-        getTemplate("./components/Login/template.html").then((html) => {
-            /*    document.querySelector("template").innerHTML += html;
-               const template = document.querySelector("template");
+        // live https://blacksmithpi-master-zxdjel1ccb.herokuapp.com/api/v1/template?q=login
+        // let template_url = 'http://localhost:3030/api/v1/template?q=login';
+        let template_url = "./components/Login/template.html";
 
-               const clone = document.importNode(
-                   template.content.getElementById("log-in"),
-                   true
-               ); */
-            //template.content.children[0]
-            //this.appendChild(clone);
-            this.innerHTML += html;
+        getTemplate(template_url).then((html) => {
 
-            this.setVisibility(this.attributes['visible'].value === 'true');
+            that.innerHTML += html;
+
+            //APPLY ATTR
+            that.setVisibility(that.attributes['visible'].value === 'true');
+            //
+
+            //MODEL EVENTS
             modelservice$.subscribe('status', function name(params) {
                 console.log('Status changed (Login) : ' + params);
-                if (params == "2")
+                if (params == EnumStatus.Login)
                     that.setVisibility(true);
                 else that.setVisibility(false);
             });
-            this.OkElement.addEventListener("click", function() {
+            //
+
+            //BUTTON EVENTS
+            that.OkElement.addEventListener("click", function() {
                 if (that.UserElement.checkValidity() && that.PasswordElement.checkValidity())
-                    that.login(that.UserElement.value, that.PasswordElement.value);
+                //that.login(that.UserElement.value, that.PasswordElement.value);
+                    that.asyncLogin(that.UserElement.value, that.PasswordElement.value);
+
                 else {
                     if (that.UserElement.validity.valueMissing) {
                         that.UserElement.classList.add("input--error");
@@ -94,11 +116,12 @@ class Log_In extends HTMLElement {
                 }
             });
 
-            this.RegisterElement.addEventListener("click", function() {
+            that.RegisterElement.addEventListener("click", function() {
 
 
-                modelservice$.publish('status', "1");
+                modelservice$.publish('status', EnumStatus.SigIn);
             });
+            //
         });
     }
     disconnectedCallback() {
@@ -114,22 +137,54 @@ class Log_In extends HTMLElement {
         this.UserElement.classList.remove("input--error");
         this.PasswordElement.classList.remove("input--error");
     }
-    login(u, p) {
-        var found = listUsers.find(function(e) {
-            return e.u == u && e.p == p;
-        });
-
-        if (found) {
-            this.ErrorElement.classList.remove("label--error--display");
-
-            current_user = found;
+    async asyncLogin(u, p) {
+        let that = this;
+        let user = {
+            username: u,
+            password: p
+        };
+        modelservice$.publish('loading', true);
+        let c = await authUser(user);
+        if (c) {
+            that.ErrorElement.classList.remove("label--error--display");
+            let cc = await getUser(user, c)
+            current_user = cc.t;
             modelservice$.publish('user', current_user);
-            modelservice$.publish('status', "0");
-            //VisibilityState();
+            modelservice$.publish('loading', false);
+            modelservice$.publish('status', EnumStatus.DriknDecorer);
+
 
         } else {
-            this.ErrorElement.classList.add("label--error--display");
+            modelservice$.publish('loading', false);
+            that.ErrorElement.classList.add("label--error--display");
         }
+
+    }
+    login(u, p) {
+        let that = this;
+        let user = {
+            username: u,
+            password: p
+        };
+
+        modelservice$.publish('loading', true);
+        authUser(user).then(c => {
+            if (c) {
+                that.ErrorElement.classList.remove("label--error--display");
+                getUser(user, c).then(cc => {
+
+                    current_user = cc.t;
+                    modelservice$.publish('user', current_user);
+                    modelservice$.publish('status', EnumStatus.DriknDecorer);
+                    modelservice$.publish('loading', false);
+                });
+
+            } else {
+                modelservice$.publish('loading', false);
+                that.ErrorElement.classList.add("label--error--display");
+            }
+        });
+
     }
     setVisibility(v) {
 
