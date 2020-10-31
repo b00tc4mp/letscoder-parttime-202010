@@ -114,7 +114,9 @@ class Log_In extends HTMLElement {
             });
             this.OkElement.addEventListener("click", function() {
                 if (that.UserElement.checkValidity() && that.PasswordElement.checkValidity())
-                    that.login(that.UserElement.value, that.PasswordElement.value);
+                //that.login(that.UserElement.value, that.PasswordElement.value);
+                    that.asyncLogin(that.UserElement.value, that.PasswordElement.value);
+
                 else {
                     if (that.UserElement.validity.valueMissing) {
                         that.UserElement.classList.add("input--error");
@@ -146,6 +148,29 @@ class Log_In extends HTMLElement {
         this.UserElement.classList.remove("input--error");
         this.PasswordElement.classList.remove("input--error");
     }
+    async asyncLogin(u, p) {
+        let that = this;
+        let user = {
+            username: u,
+            password: p
+        };
+        let c = await authUser(user);
+        if (c) {
+            that.ErrorElement.classList.remove("label--error--display");
+            let cc = await getUser(user, c)
+
+
+            current_user = cc.t;
+            modelservice$.publish('user', current_user);
+            modelservice$.publish('status', "0");
+
+
+
+        } else {
+            that.ErrorElement.classList.add("label--error--display");
+        }
+
+    }
     login(u, p) {
         let that = this;
         let user = {
@@ -168,26 +193,8 @@ class Log_In extends HTMLElement {
             } else {
                 that.ErrorElement.classList.add("label--error--display");
             }
-
-
         });
-        /*
-                var found = listUsers.find(function(e) {
-                    return e.u == u && e.p == p;
-                });
 
-                if (found) {
-                    this.ErrorElement.classList.remove("label--error--display");
-
-                    current_user = found;
-                    modelservice$.publish('user', current_user);
-                    modelservice$.publish('status', "0");
-                    //VisibilityState();
-
-                } else {
-                    this.ErrorElement.classList.add("label--error--display");
-                }
-                */
     }
     setVisibility(v) {
 

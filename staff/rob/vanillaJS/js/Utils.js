@@ -126,24 +126,41 @@ async function getUser(user, token) {
             t: json
         }
 }
-async function createUser(user) {
+
+//DELETE user+password,express, render side, server express rendering
+async function insertUser(user) {
+
+    let aut = await authUser(user);
+    let method = 'POST';
+    let headers = {
+        'Content-type': 'application/json'
+    };
+    if (aut) {
+        method = 'PATCH';
+        headers = {
+            'Content-type': 'application/json',
+            'Authorization': 'Bearer ' + aut
+        };
+        user = {
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email
+        }
+    }
 
     const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/', {
-        headers: {
-            'Content-type': 'application/json'
-        },
-        method: 'POST',
+        headers: headers,
+        method: method,
         body: JSON.stringify(user)
     });
-    const json = await response.json();
-    if (json.hasOwnProperty('error'))
-
-        return { e: json.error, t: '' }
-    else
+    if (response.ok) {
         return {
             e: '',
-            t: json.token
+            t: aut
         }
+    } else
+        return { e: response.statusText, t: '' }
+
 }
 
 async function authUser(user) {
@@ -157,4 +174,24 @@ async function authUser(user) {
     const json = await response.json();
     let token = json.token;
     return token;
+}
+async function deleteUser(user) {
+
+    let aut = await authUser(user);
+
+    if (!aut)
+        return { e: 'No user to remove.' };
+
+    const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/', {
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': 'Bearer ' + aut
+        },
+        method: 'DELETE',
+        body: JSON.stringify(user)
+    });
+    if (response.ok)
+        return { e: '', t: '' };
+    else return { e: response.statusText, t: '' }
+
 }
