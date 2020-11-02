@@ -2,36 +2,15 @@ async function Login_methods() {
     /////
 
     console.log('Test - Insert User.....')
-    let user = {
-        fistname: "1",
-        lastname: "1",
-        username: "1",
-        password: "1",
-        email: "",
-    };
-    let usera = {
-        username: user.username,
-        password: user.password
-    };
+    let user = new UserAttr("1", "1", "1", "1", "r@e.es");
 
-
-    try {
-        await authUser(3);
-    } catch (error) {
-        console.assert(error.message == 'No es un objeto', 'KO Test Insert fails- Error type')
-    }
-
-    try {
-        await authUser(user);
-    } catch (error) {
-        console.assert(error.message == 'Objeto con diferentes propiedades', 'KO Test Insert fails- Error type')
-    }
+    let usera = new User(user.username, user.password);
 
 
 
     let r1 = await insertUser(user);
     let r2 = await authUser(usera);
-    let r3 = await getUser(user, r2);
+    let r3 = await getUser(usera, r2);
 
 
     r3.t.username == '1' ? console.log('(OK) Test - Insert User> ' + user.username) : console.assert(r3.t.username == '1', '(KO) Test Insert fails')
@@ -41,28 +20,19 @@ async function Login_methods() {
     ///
     console.log('Test - Update User...')
 
-    user = {
-        fistname: "2",
-        lastname: "2",
-        username: "1",
-        password: "1",
-        email: "2",
-    };
-    usera = {
-        username: user.username,
-        password: user.password
-    };
+    user = new UserAttr("2", "2", "1", "1", "re@es");
+
 
     let r4 = await insertUser(user);
     let r5 = await authUser(usera);
-    let r6 = await getUser(user, r5);
+    let r6 = await getUser(usera, r5);
 
-    r6.t.email == '2' ? console.log('(OK) Test - Update User> ' + user.username) : console.assert(r6.t.email == '2', '(KO) Test Update fails')
+    r6.t.email == 'r@e.es' ? console.log('(OK) Test - Update User> ' + user.username) : console.assert(r6.t.email == '2', '(KO) Test Update fails')
 
 
     //
-    console.log('Test - Delete User...')
-    let r7 = await deleteUser(user);
+    console.log('Test - Delete User...');
+    let r7 = await deleteUser(usera);
     let r8 = await authUser(usera);
 
 

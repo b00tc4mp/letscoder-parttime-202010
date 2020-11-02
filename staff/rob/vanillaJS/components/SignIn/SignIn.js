@@ -86,11 +86,7 @@ class Sing_In extends HTMLElement {
             });
 
             that.RemoveElement.addEventListener("click", function() {
-                let user = {
-                    username: that.UserNameElement.value,
-                    password: that.PasswordElement.value,
-
-                };
+                let user = new Use(that.UserNameElement.value, that.PasswordElement.value);
                 modelservice$.publish('loading', true);
                 deleteUser(user).then(c => {
                     if (c.e) {
@@ -171,13 +167,7 @@ class Sing_In extends HTMLElement {
                   p: p,
                   m: m,
               }); */
-            let user = {
-                username: u,
-                password: p,
-                firstname: f,
-                lastname: l,
-                email: m,
-            };
+            let user = new UserAttr(u, p, f, l, m)
 
             modelservice$.publish('loading', true);
             insertUser(user).then(c => {

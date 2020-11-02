@@ -162,10 +162,8 @@ class Log_In extends HTMLElement {
     }
     login(u, p) {
         let that = this;
-        let user = {
-            username: u,
-            password: p
-        };
+        let user = new User(u, p);
+
 
         modelservice$.publish('loading', true);
         authUser(user).then(c => {

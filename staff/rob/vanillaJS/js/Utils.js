@@ -109,8 +109,8 @@ function ObservableOf(...data) {
 }
 
 async function getUser(user, token) {
-    if (typeof user !== 'object')
-        throw new TypeError('No es un objeto')
+
+    ObjectValidator.prototype.validate(user, new User());
 
     const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/', {
         headers: {
@@ -131,13 +131,11 @@ async function getUser(user, token) {
 
 //DELETE user+password,express, render side, server express rendering
 async function insertUser(user) {
-    if (typeof user !== 'object')
-        throw new TypeError('No es un objeto')
 
-    let aut = await authUser({
-        username: user.username,
-        password: user.password
-    });
+
+    ObjectValidator.prototype.validate(user, new UserAttr('', '', '', '', ''));
+
+    let aut = await authUser(new User(user.username, user.password));
     let method = 'POST';
     let headers = {
         'Content-type': 'application/json'
@@ -171,10 +169,8 @@ async function insertUser(user) {
 }
 
 async function authUser(user) {
-    if (typeof user !== 'object')
-        throw new TypeError('No es un objeto')
 
-    if (JSON.stringify(Object.keys(user).sort()) !== JSON.stringify(["username", "password"].sort())) throw new TypeError('Objeto con diferentes propiedades');
+    ObjectValidator.prototype.validate(user, new User('', ''));
 
 
     const response = await fetch('https://b00tc4mp.herokuapp.com/api/v2/users/auth/', {
@@ -189,13 +185,13 @@ async function authUser(user) {
     return token;
 }
 async function deleteUser(user) {
+
+    ObjectValidator.prototype.validate(user, new User('', ''));
+
     if (typeof user !== 'object')
         throw new TypeError('No es un objeto')
 
-    let aut = await authUser({
-        username: user.username,
-        password: user.password
-    });
+    let aut = await authUser(user);
 
     if (!aut)
         return { e: 'No user to remove.' };

@@ -39,6 +39,12 @@ class Wellcome extends HTMLElement {
         return this.ContainerElement.querySelector("#eDD");
     }
 
+    get eForElement() {
+        return this.ContainerElement.querySelector("#eFor");
+    }
+
+
+
     constructor() {
         super();
         /*called when the class is 
@@ -81,6 +87,11 @@ class Wellcome extends HTMLElement {
             that.eDDElement.addEventListener("click", function() {
                 modelservice$.publish('status', EnumStatus.DriknDecorer);
             });
+            that.eForElement.addEventListener("click", function() {
+                modelservice$.publish('status', EnumStatus.Forex);
+            });
+
+
 
             that.MenuHElement.addEventListener("click", function() {
                 that.MenuVElement.classList.add("container--hide");

@@ -3,6 +3,7 @@
  EnumStatus = {
      DriknDecorer: 3,
      Iframe: 4,
+     Forex: 5,
      Login: 0,
      SigIn: 1,
      Wellcome: 2,
