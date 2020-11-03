@@ -12,15 +12,9 @@
 
     </template>
 
-    <log-in visible='true'></log-in>
-    <sign-in visible='false'></sign-in>
 
-    <well-come arg='2' visible='false'></well-come>
 
-    <drink-decorator visible='false'></drink-decorator>
-    <i-frame visible='false' url="../../../src/html/marialunarillos/"></i-frame>
-    <i-loading visible='false'></i-loading>
-    <i-forex visible='false'> </i-forex>
+    <script src="js/models/Component/Component.js"></script>
 
     <script src="js/models/Decorator/js/Drink.js"></script>
     <script src="js/models/Decorator/js/Topping.js"></script>
@@ -34,8 +28,13 @@
     <script src="js/exceptions/Exception.js"></script>
 
     <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script src="js/methods/registration/auth-user.js"></script>
+    <script src="js/methods/registration/registrate-user.js"></script>
+    <script src="js/methods/registration/remove-user.js"></script>
+    <script src="js/methods/registration/retrieve-user.js"></script>
+    <script src="js/methods/state/pubsub.js"></script>
     <script src="js/Utils.js"></script>
-    <script src="js/StateModel.js"></script>
+    <script src="js/InitState.js"></script>
     <script src="js/validators/StringValidator.js"></script>
     <script src="js/validators/ObjectValidator.js"></script>
 
@@ -49,9 +48,7 @@
     <script src="components/Loading/Loading.js"></script>
     <script src="components/Forex/Forex.js"></script>
 
-    <script src="js/tests/ValidatorsMethods.js"></script>
-    <script src="js/tests/LoginMethods.js"></script>
-    <script src="js/tests/Test.js"></script>
+
 </body>
 
 </html>

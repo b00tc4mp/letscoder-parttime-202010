@@ -1,4 +1,4 @@
-class Forex extends HTMLElement {
+class Forex extends HTMLComponent {
 
 
     get ContainerElement() {
@@ -38,22 +38,30 @@ class Forex extends HTMLElement {
                                 This can be called multiple 
                                 times during the element's lifecycle. for example when using drag&drop to move elements around */
         let that = this;
+        if (modelservice$.getvalue("status") == EnumStatus.Forex)
+            that.Pre_Load(true);
+        else that.Pre_Load(false)
+        modelservice$.subscribe('status', function name(params) {
+            console.log('Status changed (Forex) : ' + params);
+            if (params == EnumStatus.Forex)
+                that.Pre_Load(true);
+            else that.Pre_Load(false);
+        });
 
 
+    }
+
+
+    Onload() {
+        let that = this;
         getTemplate("./components/Forex/template.html").then((html) => {
 
             that.innerHTML += html;
 
             //APPLY ATTR
-            that.setVisibility(that.attributes['visible'].value === 'true');
+            //that.setVisibility(that.attributes['visible'].value === 'true');
 
             //MODEL EVENTS
-            modelservice$.subscribe('status', function name(params) {
-                console.log('Status changed (Forex) : ' + params);
-                if (params == EnumStatus.Forex)
-                    that.setVisibility(true);
-                else that.setVisibility(false);
-            });
 
 
             that.ValueElement.addEventListener("click", function(e) {
@@ -71,6 +79,8 @@ class Forex extends HTMLElement {
             //that.CostElement.innerHTML =
 
         });
+
+
     }
     changeDrink(e) {
         console.log(e);

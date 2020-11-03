@@ -1,4 +1,4 @@
-class Sing_In extends HTMLElement {
+class Sing_In extends HTMLComponent {
 
     get ContainerElement() {
         if (templates['./components/SignIn/template.html']) {
@@ -54,28 +54,40 @@ class Sing_In extends HTMLElement {
                        instantiated
                        */
     }
+
     connectedCallback() {
         /*called when the element is 
                         connected to the page.
                         This can be called multiple 
                         times during the element's lifecycle. for example when using drag&drop to move elements around */
         let that = this;
+        if (modelservice$.getvalue("status") == EnumStatus.SigIn)
+            that.Pre_Load(true);
+        else that.Pre_Load(false);
+        modelservice$.subscribe('status', function name(params) {
 
+            console.log('Status changed (Singin) : ' + params);
+            if (params == EnumStatus.SigIn)
+                that.Pre_Load(true);
+            else that.Pre_Load(false);
+        });
+
+    }
+
+
+
+
+    Onload() {
+        let that = this;
         getTemplate("./components/SignIn/template.html").then((html) => {
 
             that.innerHTML += html;
 
             //APPLY ATTR
-            that.setVisibility(that.attributes['visible'].value === 'true');
+            //that.setVisibility(that.attributes['visible'].value === 'true');
 
             //MODEL EVENTS
-            modelservice$.subscribe('status', function name(params) {
 
-                console.log('Status changed (Singin) : ' + params);
-                if (params == EnumStatus.SigIn)
-                    that.setVisibility(true);
-                else that.setVisibility(false);
-            });
 
             //BUTTON EVENTS
             that.BackElement.addEventListener("click", function() {
@@ -88,7 +100,7 @@ class Sing_In extends HTMLElement {
             that.RemoveElement.addEventListener("click", function() {
                 let user = new Use(that.UserNameElement.value, that.PasswordElement.value);
                 modelservice$.publish('loading', true);
-                deleteUser(user).then(c => {
+                remove_user(user).then(c => {
                     if (c.e) {
                         console.log("Not Removed");
                         that.ErrorElement.classList.add('label--error--display');
@@ -138,11 +150,12 @@ class Sing_In extends HTMLElement {
             //
 
         });
+
     }
 
     checkupdate(that) {
         if (that.PasswordElement.value != '' && that.UserNameElement.value != '') {
-            authUser({ username: that.PasswordElement.value, password: that.UserNameElement.value }).then(c => {
+            auth_user({ username: that.PasswordElement.value, password: that.UserNameElement.value }).then(c => {
                 if (c) {
                     that.SaveElement.innerHTML = "UPDATE";
                 } else that.SaveElement.innerHTML = "SAVE";
@@ -170,7 +183,7 @@ class Sing_In extends HTMLElement {
             let user = new UserAttr(u, p, f, l, m)
 
             modelservice$.publish('loading', true);
-            insertUser(user).then(c => {
+            registrate_user(user).then(c => {
                 if (c.e) {
                     console.log("Not Registered!");
                     that.ErrorElement.classList.add('label--error--display');
@@ -200,13 +213,19 @@ class Sing_In extends HTMLElement {
         that.UserNameElement.value = that.PasswordElement.value = that.FirstNameElement.value = that.LastNameElement.value = that.MailElement.value = '';
         that.checkupdate(that);
     }
+
+
+
     setVisibility(v) {
 
         if (v) {
             this.refresh();
             this.ErrorElement.classList.remove("label--error--display");
             this.ContainerElement.classList.remove("hidden");
-        } else this.ContainerElement.classList.add("hidden");
+        } else {
+
+            this.ContainerElement.classList.add("hidden");
+        }
 
     }
 }

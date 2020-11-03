@@ -1,4 +1,4 @@
-class Loading extends HTMLElement {
+class Loading extends HTMLComponent {
 
 
     get ContainerElement() {
@@ -33,16 +33,24 @@ class Loading extends HTMLElement {
                                 times during the element's lifecycle. for example when using drag&drop to move elements around */
         let that = this;
 
+        if (modelservice$.getvalue("loading"))
+            that.Pre_Load(true);
+        else that.Pre_Load(false);
+        modelservice$.subscribe('loading', function name(params) {
 
+            if (params)
+                that.Pre_Load(true);
+            else that.Pre_Load(false);
+        });
+
+
+    }
+
+    Onload() {
+        let that = this;
         getTemplate("./components/Loading/template.html").then((html) => {
 
-            that.setVisibility(that.attributes['visible'].value === 'true');
-            modelservice$.subscribe('loading', function(params) {
-                if (params)
-                    that.setVisibility(true);
-                else that.setVisibility(false);
-            });
-
+            that.innerHTML = html;
 
         });
     }
@@ -50,12 +58,7 @@ class Loading extends HTMLElement {
     disconnectedCallback() {
         /*called when the element is disconnected from the page */
     }
-    /*   refresh() {
 
-        this.FirstNameElement.innerHTML = current_user.f; // + ' ( ' + this.attributes['arg'].value + ' ) ';
-        this.LastNameElement.innerHTML = current_user.l;
-    }
- */
     setVisibility(v) {
         if (v) {
 

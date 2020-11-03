@@ -1,4 +1,4 @@
-class IFrame extends HTMLElement {
+class IFrame extends HTMLComponent {
 
 
     get ContainerElement() {
@@ -24,32 +24,40 @@ class IFrame extends HTMLElement {
         /*called when the class is 
                                instantiated
                                */
-
+        let that = this;
+        if (modelservice$.getvalue("status") == EnumStatus.Iframe)
+            that.Pre_Load(true);
+        else that.Pre_Load(false);
+        modelservice$.subscribe('status', function name(params) {
+            console.log('Status changed (Login) : ' + params);
+            if (params == EnumStatus.Iframe)
+                that.Pre_Load(true);
+            else that.Pre_Load(false);
+        });
     }
     connectedCallback() {
         /*called when the element is 
                                 connected to the page.
                                 This can be called multiple 
                                 times during the element's lifecycle. for example when using drag&drop to move elements around */
+    }
+
+    Onload() {
         let that = this;
 
 
         getTemplate("./components/Iframe/template.html").then((html) => {
+            that.innerHTML = html;
+            that.FrameElement.data = that.attributes['url'].value;
 
-            this.FrameElement.data = that.attributes['url'].value;
 
-            that.setVisibility(that.attributes['visible'].value === 'true');
-            modelservice$.subscribe('status', function name(params) {
-                console.log('Status changed (Login) : ' + params);
-                if (params == EnumStatus.Iframe)
-                    that.setVisibility(true);
-                else that.setVisibility(false);
-            });
+
 
 
 
 
         });
+
     }
 
     disconnectedCallback() {

@@ -1,4 +1,4 @@
-class Wellcome extends HTMLElement {
+class Wellcome extends HTMLComponent {
     get ContainerElement() {
         if (templates["./components/Wellcome/template.html"]) {
             if (this.innerHTML === "")
@@ -57,19 +57,19 @@ class Wellcome extends HTMLElement {
                                     This can be called multiple 
                                     times during the element's lifecycle. for example when using drag&drop to move elements around */
         let that = this;
+        that.Pre_Load(true);
+    }
+
+    Onload() {
         //let template_url = 'http://localhost:3030/api/v1/template?q=wellcome';
         let template_url = "./components/Wellcome/template.html";
+        let that = this;
         getTemplate(template_url).then((html) => {
             that.innerHTML = html;
 
-            that.setVisibility(this.attributes["visible"].value === "true");
+            //   that.setVisibility(this.attributes["visible"].value === "true");
 
             //MODEL EVENTS
-            modelservice$.subscribe("status", function name(params) {
-                console.log("Status changed (Wellcome) : " + params);
-                if (params != EnumStatus.Login && params != EnumStatus.SigIn) that.setVisibility(true);
-                else that.setVisibility(false);
-            });
 
             modelservice$.subscribe("user", function name(user) {
                 console.log("User changed (Wellcome) : " + user);
@@ -122,6 +122,7 @@ class Wellcome extends HTMLElement {
             );
             //
         });
+
     }
     changeDrink(e) {
         console.log(e);

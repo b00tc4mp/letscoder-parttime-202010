@@ -1,4 +1,4 @@
-class DrinkDecorator extends HTMLElement {
+class DrinkDecorator extends HTMLComponent {
 
 
     get ContainerElement() {
@@ -26,6 +26,15 @@ class DrinkDecorator extends HTMLElement {
         /*called when the class is 
                                instantiated
                                */
+        let that = this;
+        if (modelservice$.getvalue("status") == EnumStatus.DriknDecorer)
+            that.Pre_Load(true);
+        else that.Pre_Load(false);
+        modelservice$.subscribe('status', function name(params) {
+            if (params == EnumStatus.DriknDecorer)
+                that.Pre_Load(true);
+            else that.Pre_Load(false);
+        });
 
     }
     connectedCallback() {
@@ -33,6 +42,9 @@ class DrinkDecorator extends HTMLElement {
                                 connected to the page.
                                 This can be called multiple 
                                 times during the element's lifecycle. for example when using drag&drop to move elements around */
+    }
+
+    Onload() {
         let that = this;
 
 
@@ -41,15 +53,10 @@ class DrinkDecorator extends HTMLElement {
             that.innerHTML += html;
 
             //APPLY ATTR
-            that.setVisibility(that.attributes['visible'].value === 'true');
+            // that.setVisibility(that.attributes['visible'].value === 'true');
 
             //MODEL EVENTS
-            modelservice$.subscribe('status', function name(params) {
-                console.log('Status changed (Wellcome) : ' + params);
-                if (params == EnumStatus.DriknDecorer)
-                    that.setVisibility(true);
-                else that.setVisibility(false);
-            });
+
 
             modelservice$.subscribe('toppin', (top) => {
                 if (top) {
@@ -121,7 +128,10 @@ class DrinkDecorator extends HTMLElement {
 
 
         });
+
     }
+
+
     changeDrink(e) {
         console.log(e);
 
