@@ -1,6 +1,13 @@
-function reduce(array) {
+function reduce(array, callback, valorInicial) {
+
     for (var i = 0; i < array.length; i++) {
-        var suma = + array[i]
+        var result = callback(valorInicial + array[i])
     }
-    if (i = array.length) console.log(suma)
+
+    return result
+
+
 }
+
+
+

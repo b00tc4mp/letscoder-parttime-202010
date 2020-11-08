@@ -8,7 +8,7 @@ Los comandos más utilizados son **git** seguido de:
 - **clone**: crea una copia de un repositorio
 - **add**: añade cambios al index
 - **commit**: (-m) añade a head (añadir comentario)
-- **push** : (-v) envia cambios al repositorio remoto
+- **push** : (-u) envia cambios al repositorio remoto
 - **fetch** : busca archivos en repositorio remoto
 - **pull** : descargar y extraer el contenido en un repositorio remoto
 - **merge** : fusiona una rama con otra activa

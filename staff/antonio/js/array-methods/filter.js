@@ -8,14 +8,13 @@
 function filter(array, callback) { // array [1,2,4,6] , pares()
     var newArray = []
 
-    for (var i = 0; i < array.length; i++) {
-        if (callback(array[i])) newArray[newArray.length] = array[i]
+    if (callback(array[i])) newArray[newArray.length] = array[i]
 
 
 
-    }
+}
 
-    return newArray                 // newArray = [2,4,6]
+return newArray                 // newArray = [2,4,6]
 
 }
 
