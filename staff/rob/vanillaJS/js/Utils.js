@@ -42,6 +42,7 @@ function unLoadScript(url) {
     for (let item of document.querySelector("head").children)
         if (item.src.indexOf(url) != -1) item.remove();
 }
+ 
 
 function loadCSS(url) {
     var head = document.getElementsByTagName("head")[0];
@@ -108,8 +109,14 @@ function checkElementTabs(root, element) {
             item.innerHTML = item.innerHTML.replace('{{', '').replace('}}', '');
 
         }
+ 
 
 
+function setAttrsElement(item, model) {
+    let cal = "src";
+    if (item.children.length == 0) {
+        Array.from(item.attributes).forEach(c => replaceAttrElement(item, c.localName, model));
+        replaceAttrElement(item, "innerText", model);
     }
 }
 
@@ -126,6 +133,7 @@ function raiseEvent(root, events, e) {
             root[method](e.target.value);
     } else root[method](attr);
 
+ 
 }
 
 
@@ -154,12 +162,14 @@ function replaceAttrElement(item, val, model) {
         liste.forEach(keys => {
 
             let objkey = keys.replace("{{", "").replace("}}", "").split('.').reduce(function(accum, value, index) {
+ 
                 if (index == 0) accum = model[value];
                 else {
                     accum = accum[value];
                 }
                 return accum;
             }, {});
+ 
             val == 'src' || val == 'href' ? elem = objkey : elem = elem.replace(keys.toString(), objkey);
 
             //.replace("{{", "").replace("}}", "")
@@ -185,4 +195,5 @@ function getVariables(elem) {
         }
     } while (m);
     return liste;
+ 
 }

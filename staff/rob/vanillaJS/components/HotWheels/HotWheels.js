@@ -6,10 +6,12 @@ class HotWheels extends HTMLComponent {
             return this.querySelector("#hotwheel");
         } else return this.querySelector("#hotwheel");
     }
+ 
 
     constructor() {
         super();
 
+ 
         let that = this;
         that.url = '/components/HotWheels/';
     }
@@ -19,6 +21,7 @@ class HotWheels extends HTMLComponent {
         let that = this;
         let template_url = "." + that.url +
             "template.html";
+ 
 
 
         modelservice$.subscribe('vehiclescolor', (d) => {
@@ -39,6 +42,7 @@ class HotWheels extends HTMLComponent {
 
         });
 
+ 
         modelservice$.publish("colors", [{
                 name: '--Choose COLOR--'
             },
@@ -66,6 +70,7 @@ class HotWheels extends HTMLComponent {
 
     changeColor(color) {
         modelservice$.publish("vehiclescolor", color);
+ 
     }
 
 

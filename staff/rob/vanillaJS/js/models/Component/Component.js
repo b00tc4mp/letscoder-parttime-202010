@@ -5,6 +5,7 @@ class HTMLComponent extends HTMLElement {
                                     This can be called multiple 
                                     times during the element's lifecycle. for example when using drag&drop to move elements around */
         this.Onload();
+ 
         if (this.url) loadCSS("." + this.url + "template.css")
     }
     disconnectedCallback() {
@@ -22,6 +23,7 @@ class HTMLComponent extends HTMLElement {
         let that = this;;
         checkElementTabs(that, that);
         //bind en vez de this
+ 
     }
 
     Onload() {
