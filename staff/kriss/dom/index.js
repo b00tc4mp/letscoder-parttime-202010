@@ -27,8 +27,7 @@ section.innerHTML = `<form action="" class="form" id='register'>
             <button type="submit" class="form__button">Send</button>
         </form>`
 
-var form = document.querySelector('form'
-
+var form = document.querySelector('form')
 
 form.addEventListener('submit', function (event) {
     event.preventDefault()
@@ -38,4 +37,5 @@ form.addEventListener('submit', function (event) {
     var email = form['email'].value
     var password = form['password'].value
     console.log(name, surname, email, password)
-}
+
+})

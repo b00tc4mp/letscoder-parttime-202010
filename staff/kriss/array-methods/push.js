@@ -1,10 +1,6 @@
-function push (array) {
-array [array.length + 1]
-array == array.length + 1
-array = array.length + 1 
-
+function myFunction (array,){
+    var array = array.lenght
+    var newArray = array [array.lenght + 1]
+    return newArray
 
 }
-var numbers = [1, 2, 3, 4, 5 ] /* additonal element at the end of 
-an array */
-numbers.push (7);
