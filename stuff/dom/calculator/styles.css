@@ -1,0 +1,63 @@
+.container {
+  margin: 0 auto;
+  width: 60%;
+  background-color: lightblue;
+}
+
+.display {
+  background-color: darkgray;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "7 8 9 X" "4 5 6 -" "1 2 3 +" "0 0 / =";
+}
+.keys:nth-child(1) {
+  grid-area: "7";
+}
+.keys:nth-child(2) {
+  grid-area: "8";
+}
+.keys:nth-child(3) {
+  grid-area: "9";
+}
+.keys:nth-child(4) {
+  grid-area: "X";
+}
+.keys:nth-child(5) {
+  grid-area: "4";
+}
+.keys:nth-child(6) {
+  grid-area: "5";
+}
+.keys:nth-child(7) {
+  grid-area: "6";
+}
+.keys:nth-child(8) {
+  grid-area: "-";
+}
+.keys:nth-child(9) {
+  grid-area: "1";
+}
+.keys:nth-child(10) {
+  grid-area: "2";
+}
+.keys:nth-child(11) {
+  grid-area: "3";
+}
+.keys:nth-child(12) {
+  grid-area: "+";
+}
+.keys:nth-child(13) {
+  grid-area: "0";
+}
+.keys:nth-child(14) {
+  grid-area: "/";
+}
+.keys:nth-child(15) {
+  grid-area: "=";
+}
+
+/*# sourceMappingURL=styles.css.map */
