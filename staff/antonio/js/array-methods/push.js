@@ -1,5 +1,5 @@
 function push(array, newItem) {
-    var = newItem
+    var newItem
     array = array(newItem)
 
     return array.length

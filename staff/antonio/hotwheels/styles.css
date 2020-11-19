@@ -1,0 +1,9 @@
+.car {
+    background-color: lightblue;
+    width: 20%;
+    margin: 2px;
+  }
+  .car img {
+    width: 100%;
+  }
+  
