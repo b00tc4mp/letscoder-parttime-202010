@@ -8,15 +8,19 @@
 function filter(array, callback) { // array [1,2,4,6] , pares()
     var newArray = []
 
-    if (callback(array[i])) newArray[newArray.length] = array[i]
+    for (var i = 0; i < array.length; i++) {
+        if (callback(array[i])) newArray[newArray.length] = array[i]
+    }
 
 
 
+
+    return newArray
 }
 
-return newArray                 // newArray = [2,4,6]
 
-}
+
+
 
 function pares(num) {        // callback sera si son numeros pares
     return num % 2 === 0
