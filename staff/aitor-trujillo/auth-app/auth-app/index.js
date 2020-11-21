@@ -1,7 +1,7 @@
 const title = document.querySelector('.title')
 const register = document.getElementById('register')
 const login = document.querySelector('#login')
-const editUser = document.querySelector('#edit-user')
+const editForm = document.querySelector('#edit-user')
 const errorFeedback = document.querySelector('.error')
 const myToken = ''
 
@@ -68,12 +68,12 @@ login.addEventListener('submit', function (event) {
     }
 })
 
-editUser.addEventListener('submit', (event) => {
+editForm.addEventListener('submit', (event) => {
     event.preventDefault()
 
-    const address = editUser['address'].value
-    const gender = editUser['gender'].value
-    const age = editUser['age'].value
+    const address = editForm['address'].value
+    const gender = editForm['gender'].value
+    const age = editForm['age'].value
 
     try {
         editUser(address, gender, age, (error) => {

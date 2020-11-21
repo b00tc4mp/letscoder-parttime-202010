@@ -1,10 +1,10 @@
 console.log('register user test') // title
 console.log('should register a valid user') // happy path
 
-const username = 'testing-u' + Math.random()
-const password = 'testing-p' + Math.random()
-const name = 'testing-n' + Math.random()
-const surname = 'testing-s' + Math.random()
+let username = 'testing-u' + Math.random()
+let password = 'testing-p' + Math.random()
+let name = 'testing-n' + Math.random()
+let surname = 'testing-s' + Math.random()
 
 registerUser(username, password, name, surname, function (error) {
 
@@ -32,11 +32,14 @@ registerUser(username, password, name, surname, function (error) {
 console.log('should not register already registered user') // unhappy path
 
 
+username = 'testing-u' + Math.random()
+password = 'testing-p' + Math.random()
+
 const method = 'POST'
 const url = 'https://b00tc4mp.herokuapp.com/api/v2/users/'
 const headers = { 'Content-Type': 'application/json' }
 const body = {
-    username: 'existinguser', password: '123'
+    username, password
 }
 
 call(method, url, headers, JSON.stringify(body), function (status, res) {
@@ -45,9 +48,9 @@ call(method, url, headers, JSON.stringify(body), function (status, res) {
         const name = 'testing-n' + Math.random()
         const surname = 'testing-s' + Math.random()
 
-        registerUser('existinguser', password, name, surname, function (error) {
+        registerUser(username, password, name, surname, function (error) {
             console.assert(error.length > 0, 'error should exist')
-            console.assert(error === "user with username \"existinguser\" already exists", 'should show existing user error')
+            console.assert(error === `user with username "${username}" already exists`, 'should show existing user error')
 
         })
     } else {
