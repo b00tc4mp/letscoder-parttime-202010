@@ -1,9 +1,3 @@
-//function filter(array, callback) {
-//for (var i = 0; i < array.length; i++) {
-//    if (callback(array[i]) === array[i]) 
-//    return array[i]
-
-
 
 function filter(array, callback) { // array [1,2,4,6] , pares()
     var newArray = []
@@ -29,3 +23,4 @@ function pares(num) {        // callback sera si son numeros pares
 
 }
 pares(1)                      
+

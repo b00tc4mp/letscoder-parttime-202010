@@ -1,3 +1,4 @@
+
 function some(array, callback) {
     for (var i = 0; i < array.length; i++) {
         if (callback(array[i])) return true
@@ -14,4 +15,3 @@ function check10(num) {
 
 var nums = [1, 2, 3, 11]
 some(nums, check10)
-

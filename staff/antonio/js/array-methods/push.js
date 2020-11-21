@@ -1,3 +1,4 @@
+
 function push(array, newItem) { //numeros, "13"
     array[array.length] = newItem
 
