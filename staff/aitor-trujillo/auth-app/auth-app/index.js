@@ -1,7 +1,9 @@
 const title = document.querySelector('.title')
 const register = document.getElementById('register')
 const login = document.querySelector('#login')
+const editUser = document.querySelector('#edit-user')
 const errorFeedback = document.querySelector('.error')
+const myToken = ''
 
 register.addEventListener('submit', function (event) {
     event.preventDefault()
@@ -34,14 +36,15 @@ login.addEventListener('submit', function (event) {
     try {
         authenticateUser(username, password, function (error, token) {
             if (error) return errorFeedback.innerText = error
+
+            myToken = token
+
             retrieveUser(token, function (error, user) {
                 if (error) return errorFeedback.innerText = error
 
 
                 login.style.display = 'none'
-                title.innerHTML = 'Welcome back' + user.name
-
-                // Display the user info with append childs
+                title.innerHTML = 'Welcome back ' + user.name
 
                 const div = document.createElement('div')
                 const ul = document.createElement('ul')
@@ -49,31 +52,42 @@ login.addEventListener('submit', function (event) {
                 li1.innerText = 'Name: ' + user.name
                 var li2 = document.createElement('li')
                 li2.innerText = 'Surname: ' + user.surname
-                // email (new li with innerText)
                 ul.appendChild(li1)
                 ul.appendChild(li2)
-                // new ul.appendChild with email
                 div.appendChild(ul)
                 document.querySelector('body').appendChild(div)
 
+                editUser.style.display = 'flex' // now we show edit user form, new addEventListener
             })
-
-
-
         })
-
-
-
-
-
     } catch (error) {
         var errorBanner = document.createElement('div')
         errorBanner.innerText = error.message
         errorBanner.className = 'error'
         login.appendChild(errorBanner)
     }
+})
 
+editUser.addEventListener('submit', (event) => {
+    event.preventDefault()
 
+    const address = editUser['address'].value
+    const gender = editUser['gender'].value
+    const age = editUser['age'].value
+
+    try {
+        editUser(address, gender, age, (error) => {
+
+            // tip: we will need to call again retrieve User
+            retrieveUser(
+
+                // print to body the new info of the user with dom
+            )
+        })
+
+    } catch (error) {
+
+    }
 })
 
 

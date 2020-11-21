@@ -40,15 +40,30 @@
 
     <!-- SHOW USER DATA -->
 
+    <section class="container">
+        <form action="" class="form" id='edit-user'>
+            <h2>Editing User's Info</h2>
+            <label for="address">User's Address</label>
+            <input type="text" name="address" id="address" class="form__item">
+            <label for="gender">User's Gender</label>
+            <input type="text" name="gender" id="gender" class="form__item">
+            <label for="age">User's Age</label>
+            <input type="text" name="age" id="age" class="form__item form__item--last">
+            <button type="submit" class="form__button">Send User Edit</button>
+        </form>
+    </section>
+
     <script src="./utils/call.js"></script>
 
     <script src="./logic/register-user.js"></script>
-    <script src="logic/register-user.test.js"></script>
+    <script src="./logic/register-user.test.js"></script>
     <script src="./logic/authenticate-user.js"></script>
-    <script src="logic/authenticate-user.test.js"></script>
+    <script src="./logic/authenticate-user.test.js"></script>
     <script src="./logic/retrieve-user.js"></script>
-    <script src="logic/retrieve-user.test.js"></script>
-
+    <script src="./logic/retrieve-user.test.js"></script>
+    <script src="./logic/edit-user.js"></script>
+    <script src="./logic/edit-user.test.js"></script>
+    
     <script src="./index.js"></script>
 </body>
 
