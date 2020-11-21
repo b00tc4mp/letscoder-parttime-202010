@@ -25,7 +25,7 @@ searchBar.addEventListener("submit", function (event) {
 function showCars(array) {
     array.forEach(function (car) {
         var div = document.createElement("div");
-        div.cassList = "car";
+        div.classList = "car";
         div.innerHTML = `
         <div>${car.id}</div>
         <img
