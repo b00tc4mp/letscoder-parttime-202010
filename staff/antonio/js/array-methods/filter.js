@@ -1,4 +1,5 @@
 
+
 function filter(array, callback) { // array [1,2,4,6] , pares()
     var newArray = []
 

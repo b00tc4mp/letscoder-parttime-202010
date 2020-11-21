@@ -1,4 +1,3 @@
-
 function map(array, callback) {   // [1,2,3,4], sum10 
     var newArray = []
 
