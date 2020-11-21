@@ -98,6 +98,7 @@ class Log_In extends HTMLComponent {
         });
     }
 
+ 
 
     refresh() {
         this.UserElement.value = "";
@@ -108,17 +109,21 @@ class Log_In extends HTMLComponent {
     }
     async asyncLogin(u, p) {
         let that = this;
+ 
         let user = new User(u, p);
+ 
         modelservice$.publish("loading", true);
         let c = await auth_user(user);
         if (c) {
             that.ErrorElement.classList.remove("label--error--display");
             let cc = await retrieve_user(user, c);
             current_user = cc.t;
+ 
             current_user.password = p;
             modelservice$.publish("user", current_user);
             modelservice$.publish("loading", false);
             modelservice$.publish("status", EnumPages.Forex);
+ 
         } else {
             modelservice$.publish("loading", false);
             that.ErrorElement.classList.add("label--error--display");
