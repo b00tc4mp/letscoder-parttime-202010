@@ -3,13 +3,16 @@ class HotWheels extends HTMLComponent {
         if (templates["./components/HotWheels/template.html"]) {
             if (this.innerHTML === "")
                 this.innerHTML += templates["./components/HotWheels/template.html"];
+ 
             return this.querySelector("#hotwheel");
         } else return this.querySelector("#hotwheel");
+ 
     }
 
     constructor() {
         super();
 
+ 
         let that = this;
         that.url = '/components/HotWheels/';
     }
@@ -19,6 +22,7 @@ class HotWheels extends HTMLComponent {
         let that = this;
         let template_url = "." + that.url +
             "template.html";
+ 
 
 
         modelservice$.subscribe('vehiclescolor', (d) => {
@@ -34,11 +38,13 @@ class HotWheels extends HTMLComponent {
                     // that.setVisibility(that.attributes["visible"].value === "true");
 
                 });
+ 
 
             });
 
         });
 
+ 
         modelservice$.publish("colors", [{
                 name: '--Choose COLOR--'
             },
@@ -66,6 +72,7 @@ class HotWheels extends HTMLComponent {
 
     changeColor(color) {
         modelservice$.publish("vehiclescolor", color);
+ 
     }
 
 

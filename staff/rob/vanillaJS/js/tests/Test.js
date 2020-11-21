@@ -1,9 +1,12 @@
+ 
 //Testing Validators (async is ok)
+ 
 auth_validator();
 registrate_validator();
 remove_validator();
 retrieve_validator();
 
+ 
 //Testing Login features (async is not ok)
 (async() => {
     //'use strict'
@@ -14,6 +17,7 @@ retrieve_validator();
 
 })()
 
+ 
 
 
 

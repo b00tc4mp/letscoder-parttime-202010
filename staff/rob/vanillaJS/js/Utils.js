@@ -26,6 +26,7 @@ async function getTemplate(url) {
     });
     return promise;
     /*  promise.then((html) => {
+ 
                   document.querySelector('template').innerHTML += html;
               }); */
 }
@@ -185,4 +186,5 @@ function getVariables(elem) {
         }
     } while (m);
     return liste;
+ 
 }
