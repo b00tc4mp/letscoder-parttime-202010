@@ -1,8 +1,8 @@
-function push(array, newItem) {
-    var newItem
-    array = array(newItem)
 
-    return array.length
+function push(array, newItem) { //numeros, "13"
+    array[array.length] = newItem
+
+    return array // ["10", "11", "12", "13"]
 }
 
 numeros = ["10", "11", "12"]

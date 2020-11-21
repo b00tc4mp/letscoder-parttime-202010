@@ -5,6 +5,7 @@ class HTMLComponent extends HTMLElement {
                                     This can be called multiple 
                                     times during the element's lifecycle. for example when using drag&drop to move elements around */
         this.Onload();
+ 
         if (this.url) loadCSS("." + this.url + "template.css")
     }
     disconnectedCallback() {
@@ -24,6 +25,7 @@ class HTMLComponent extends HTMLElement {
         //bind en vez de this
     }
 
+ 
     Onload() {
         throw new Error("This method must be overwritten!");
     }
