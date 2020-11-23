@@ -9,7 +9,7 @@ function authenticateUser(username, password, callback) {
 
     call(method, url, headers, body, (status, res) => {
 
-        if (status === 200) {
+        if (status === 204) {
             const { token } = JSON.parse(res)
 
             callback(null, token)
