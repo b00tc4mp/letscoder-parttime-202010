@@ -12,7 +12,5 @@ for (var i = 0; i < animals.length; i++) {
     for (var j = 0; j < animals[i].length; j++) {
         animals[i][j] = animals[i][j] + "s"
     }   //igual a animals[i][j] += "s"
-
-
-
 }
+console.log(animals) 

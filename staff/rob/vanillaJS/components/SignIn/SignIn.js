@@ -77,7 +77,9 @@ class Sing_In extends HTMLComponent {
             });
 
             that.RemoveElement.addEventListener("click", function() {
+ 
                 let user = new User(that.UserNameElement.value, that.PasswordElement.value);
+ 
                 modelservice$.publish('loading', true);
                 remove_user(user).then(c => {
                     if (c.e) {
@@ -134,8 +136,10 @@ class Sing_In extends HTMLComponent {
 
     checkupdate(that) {
         if (that.PasswordElement.value != '' && that.UserNameElement.value != '') {
+ 
             let user = new User(that.PasswordElement.value, that.PasswordElement.value);
             auth_user(user).then(c => {
+ 
                 if (c) {
                     that.SaveElement.innerHTML = "UPDATE";
                 } else that.SaveElement.innerHTML = "SAVE";

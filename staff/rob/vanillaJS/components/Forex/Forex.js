@@ -1,12 +1,15 @@
 class Forex extends HTMLComponent {
+ 
     get ContainerElement() {
         if (templates["./components/Forex/template.html"]) {
             if (this.innerHTML === "")
                 this.innerHTML += templates["./components/Forex/template.html"];
+ 
             return this.querySelector("#forex");
         } else return this.querySelector("#forex");
 
         //  if (!this.hasOwnProperty('children')) {
+ 
     }
 
     constructor() {
@@ -151,6 +154,7 @@ class Forex extends HTMLComponent {
         if (v) {
             this.ContainerElement.classList.remove("hidden");
         } else this.ContainerElement.classList.add("hidden");
+ 
     }
 }
 customElements.define("i-forex", Forex);
