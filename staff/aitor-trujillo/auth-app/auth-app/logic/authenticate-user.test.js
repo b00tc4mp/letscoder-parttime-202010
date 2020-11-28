@@ -1,7 +1,7 @@
 console.log('authenticateUser TEST')
 
 function beforeEach(callback) {
-    let username = 'testing-u' + Math.random()
+    let username = 'testing-u' + Math.random() // generate username & password
     let password = 'testing-p' + Math.random()
 
     let method = 'POST'
@@ -9,13 +9,13 @@ function beforeEach(callback) {
     let headers = { 'Content-Type': 'application/json' }
     let body = JSON.stringify({ username, password })
 
-    call(method, url, headers, body, (status, res) => {
+    call(method, url, headers, body, (status, res) => { // call api to register random user created
         if (status === 201) {
 
-            callback(username, password)
+            callback(username, password)// this callback will include the test itself
 
         } else {
-            console.assert(status !== 201, 'registering user before testing failed')
+            console.assert(status !== 201, 'registering user before testing failed') // if fails before testing feedback
         }
     })
 }
