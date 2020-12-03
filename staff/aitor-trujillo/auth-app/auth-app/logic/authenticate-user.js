@@ -8,13 +8,10 @@ function authenticateUser(username, password, callback) {
     const body = JSON.stringify({ username, password })
 
     call(method, url, headers, body, (status, res) => {
-
         if (status === 200) {
             const { token } = JSON.parse(res)
 
             callback(null, token)
-
-
         } else {
             const { error } = JSON.parse(res)
             callback(error)
@@ -22,4 +19,3 @@ function authenticateUser(username, password, callback) {
         }
     })
 }
-
