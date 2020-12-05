@@ -3,7 +3,22 @@ const register = document.getElementById('register')
 const login = document.querySelector('#login')
 const editForm = document.querySelector('#edit-user')
 const errorFeedback = document.querySelector('.error')
-const myToken = ''
+const pageSwitch = document.querySelector('.reg-log-toggle')
+let myToken = ''
+
+pageSwitch.addEventListener('click', (event) => {
+    if (!login.style.display || login.style.display === 'none') {
+        register.style.display = 'none'
+        title.innerHTML = 'LOGIN'
+        login.style.display = 'flex'
+        pageSwitch.innerText = 'Go to Register'
+    } else {
+        login.style.display = 'none'
+        title.innerHTML = 'REGISTER'
+        register.style.display = 'flex'
+        pageSwitch.innerText = 'Go to Login'
+    }
+})
 
 register.addEventListener('submit', function (event) {
     event.preventDefault()
@@ -17,13 +32,14 @@ register.addEventListener('submit', function (event) {
             if (error) return errorFeedback.innerText = error
 
             alert('User Created!')
+            errorFeedback.innerText = ''
             register.style.display = 'none'
             login.style.display = 'flex'
             title.innerHTML = 'LOGIN'
         })
 
     } catch (error) {
-        errorFeedback.innerText = error
+        errorFeedback.innerText = error.message
     }
 })
 
@@ -44,27 +60,26 @@ login.addEventListener('submit', function (event) {
 
 
                 login.style.display = 'none'
+                errorFeedback.innerText = ''
+                pageSwitch.style.display = 'none'
                 title.innerHTML = 'Welcome back ' + user.name
 
                 const div = document.createElement('div')
                 const ul = document.createElement('ul')
                 const li1 = document.createElement('li')
                 li1.innerText = 'Name: ' + user.name
-                var li2 = document.createElement('li')
+                const li2 = document.createElement('li')
                 li2.innerText = 'Surname: ' + user.surname
                 ul.appendChild(li1)
                 ul.appendChild(li2)
                 div.appendChild(ul)
                 document.querySelector('body').appendChild(div)
 
-                editUser.style.display = 'flex' // now we show edit user form, new addEventListener
+                editForm.style.display = 'flex' // now we show edit user form, new addEventListener
             })
         })
     } catch (error) {
-        var errorBanner = document.createElement('div')
-        errorBanner.innerText = error.message
-        errorBanner.className = 'error'
-        login.appendChild(errorBanner)
+        errorFeedback.innerText = error.message
     }
 })
 
@@ -76,17 +91,32 @@ editForm.addEventListener('submit', (event) => {
     const age = editForm['age'].value
 
     try {
-        editUser(address, gender, age, (error) => {
+        editUser(myToken, address, gender, age, (error) => {
+            if (error) return errorFeedback.innerText = error
+            errorFeedback.innerText = ''
 
-            // tip: we will need to call again retrieve User
-            retrieveUser(
+            retrieveUser(myToken, (error, user) => {
+                if (error) return errorFeedback.innerText = error
 
-                // print to body the new info of the user with dom
-            )
+                const div = document.createElement('div')
+                const ul = document.createElement('ul')
+                const li1 = document.createElement('li')
+                li1.innerText = 'Address: ' + user.address
+                const li2 = document.createElement('li')
+                li2.innerText = 'Gender: ' + user.gender
+                const li3 = document.createElement('li')
+                li3.innerText = 'Age: ' + user.age
+                ul.appendChild(li1)
+                ul.appendChild(li2)
+                ul.appendChild(li3)
+                div.appendChild(ul)
+                document.querySelector('body').appendChild(div)
+
+            })
         })
 
     } catch (error) {
-
+        errorFeedback.innerText = error.message
     }
 })
 
