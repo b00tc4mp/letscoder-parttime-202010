@@ -1,22 +1,32 @@
+import { useState } from 'react'
+
 import Landing from './Landing'
 import Register from './Register'
+import Login from './Login'
+import Home from './Home'
 
 function App() {
+  const [view, setView] = useState('landing')
 
   const handleGoToRegister = () => {
-    alert("I'm handling Register Click")
+    setView('register')
   }
 
   const handleGoToLogin = () => {
-    alert("I'm handling Login Click")
+    setView('login')
   }
 
+  const handleOnUserLogin = (token) => {
+    sessionStorage.token = token
+    setView('home')
+  }
 
-
-  return (
-    <Landing goToRegister={handleGoToRegister} goToLogin={handleGoToLogin} />
-    // <Register />
-  );
+  return (<>
+    {view === 'landing' && <Landing goToRegister={handleGoToRegister} goToLogin={handleGoToLogin} />}
+    {view === 'register' && <Register goToLogin={handleGoToLogin} />}
+    {view === 'login' && <Login goToRegister={handleGoToRegister} onUserLogin={handleOnUserLogin} />}
+    {view === 'home' && <Home />}
+  </>);
 }
 
 export default App;
