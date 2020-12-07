@@ -1,0 +1,20 @@
+.nav
+    height: 4.5vh
+    background-color: #1c1c1c
+    display: flex
+    width: 100%
+    justify-content: space-around
+    align-items: center
+
+    &__item
+        text-decoration: none
+        font-size: 1.1em
+        font-weight: 600
+        color: white
+
+@media screen and ( min-width: 992px )
+    .nav
+        justify-content: end
+
+        &__item
+            margin: 2em
