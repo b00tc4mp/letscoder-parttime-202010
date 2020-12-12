@@ -1,3 +1,5 @@
+import call from './utils/call'
+
 function retrieveUser(token, callback) {
     if (!token) throw new TypeError('bad request')
 
@@ -16,8 +18,7 @@ function retrieveUser(token, callback) {
             const { error } = JSON.parse(error)
             callback(error)
         }
-
     })
-
-
 }
+
+export default retrieveUser

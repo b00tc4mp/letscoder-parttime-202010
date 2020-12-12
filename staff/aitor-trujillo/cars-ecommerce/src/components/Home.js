@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Nav from './Nav'
 import Search from './Search'
 import AllCars from './AllCars'
