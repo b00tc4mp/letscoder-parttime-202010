@@ -16,7 +16,6 @@ function Login({ goToRegister, onUserLogin }) {
 
             onUserLogin(token)
         })
-
     }
 
 

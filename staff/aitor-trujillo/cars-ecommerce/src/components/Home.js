@@ -24,7 +24,7 @@ function Home(props) {
     }
 
     return (<>
-        <Nav searchClick={handleSearchClick} allCarsClick={handleAllCarsClick} profileClick={handleProfileClick} />
+        <Nav selected={homeView} searchClick={handleSearchClick} allCarsClick={handleAllCarsClick} profileClick={handleProfileClick} />
         {homeView === 'search' && <Search />}
         {homeView === 'all-cars' && <AllCars />}
         {homeView === 'profile' && <Profile />}

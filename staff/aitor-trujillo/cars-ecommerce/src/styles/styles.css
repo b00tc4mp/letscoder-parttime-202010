@@ -80,6 +80,55 @@ code {
   align-self: center;
 }
 
+.search-bar {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  height: 10vh;
+}
+.search-bar__input {
+  padding: 12px;
+  margin: 5px;
+}
+
+.feedback {
+  font-weight: bold;
+}
+.feedback--error {
+  font-size: 1.2em;
+  color: crimson;
+}
+.feedback--info {
+  font-size: 1.2em;
+  color: white;
+}
+
+.carsResult {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media screen and (min-width: 992px) {
+  .search-bar {
+    width: 50%;
+  }
+}
+.user-display {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  justify-content: center;
+}
+.user-display__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10%;
+  width: 100%;
+}
+
 .button {
   color: black;
   font-weight: bold;
@@ -119,47 +168,19 @@ code {
   color: white;
 }
 
+.selected {
+  background-color: lightblue;
+  padding: 5px;
+  border-radius: 10px;
+  color: black;
+}
+
 @media screen and (min-width: 992px) {
   .nav {
     justify-content: end;
   }
   .nav__item {
     margin: 2em;
-  }
-}
-.search-bar {
-  display: flex;
-  width: 70%;
-  align-items: center;
-  height: 10vh;
-}
-.search-bar__input {
-  padding: 12px;
-  margin: 5px;
-}
-
-.feedback {
-  font-weight: bold;
-}
-.feedback--error {
-  font-size: 1.2em;
-  color: crimson;
-}
-.feedback--info {
-  font-size: 1.2em;
-  color: white;
-}
-
-.carsResult {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-@media screen and (min-width: 992px) {
-  .search-bar {
-    width: 50%;
   }
 }
 .car {
@@ -190,6 +211,30 @@ code {
 .car__price {
   color: darkgreen;
   margin-top: 10px;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.avatar-img {
+  width: 180px;
+  height: 180px;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  padding: 3%;
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 992px) {
+  .avatar-img {
+    width: 250px;
+    height: 250px;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */
