@@ -1,5 +1,6 @@
-import AppButton from './AppButton'
+import { useEffect, useState } from 'react'
 
+import AppButton from './AppButton'
 import authenticateUser from '../logic/authenticate-user'
 
 function Login({ goToRegister, onUserLogin }) {
@@ -15,7 +16,6 @@ function Login({ goToRegister, onUserLogin }) {
 
             onUserLogin(token)
         })
-
     }
 
 

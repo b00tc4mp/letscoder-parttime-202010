@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Nav from './Nav'
 import Search from './Search'
 import AllCars from './AllCars'
@@ -24,7 +24,7 @@ function Home(props) {
     }
 
     return (<>
-        <Nav searchClick={handleSearchClick} allCarsClick={handleAllCarsClick} profileClick={handleProfileClick} />
+        <Nav selected={homeView} searchClick={handleSearchClick} allCarsClick={handleAllCarsClick} profileClick={handleProfileClick} />
         {homeView === 'search' && <Search />}
         {homeView === 'all-cars' && <AllCars />}
         {homeView === 'profile' && <Profile />}

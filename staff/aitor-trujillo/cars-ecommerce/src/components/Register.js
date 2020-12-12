@@ -34,7 +34,7 @@ function Register({ goToLogin }) {
                 <input type="password" name="password" id="password-register" className="form__item form__item--last" />
                 <AppButton text='Register' classes='form__button' />
             </form>
-            <AppButton text='Go to Login' color='highlight' buttonClick={goToLogin} />
+            <AppButton text='Go to Login' color='highlight' buttonClick={(event) => goToLogin()} />
         </section>
     );
 }
