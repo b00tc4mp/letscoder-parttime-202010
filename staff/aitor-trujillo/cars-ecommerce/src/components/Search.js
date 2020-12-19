@@ -1,24 +1,31 @@
 import { useState } from 'react';
 import AppButton from './AppButton'
 import Car from './Car'
-import searchCars from '../logic/searchCars'
+import Feedback from './Feedback'
+import { searchCars } from '../logic'
+
 
 function Search(props) {
     const [carsFound, setCarsFound] = useState([])
-    const [noResultsFeedback, setNoResultsFeedback] = useState('')
+    const [error, setError] = useState('')
+    const [feedback, setFeedback] = useState('')
 
     const handleOnSearch = (event) => {
         event.preventDefault()
 
-        setNoResultsFeedback('')
+        setFeedback('')
         setCarsFound([])
         const query = event.target.query.value
 
-        searchCars(query, (error, cars) => {
-            if (error) return alert(error)
+        try {
+            searchCars(query, (error, cars) => {
+                if (error) return setError(error)
 
-            cars.length ? setCarsFound(cars) : setNoResultsFeedback(`No results for ${query}`)
-        })
+                cars.length ? setCarsFound(cars) : setFeedback(`No results for ${query}`)
+            })
+        } catch (error) {
+            setError(error.message)
+        }
     }
 
     return (<section className='container container--donotcenter'>
@@ -27,7 +34,10 @@ function Search(props) {
             <input className='form__item search-bar__input' placeholder='Find your next car' name='query' type='text' />
             <AppButton text='Go!' classes='button--small' color='highlight' />
         </form>
-        {noResultsFeedback && <div className='feedback feedback--info'>{noResultsFeedback}</div>}
+
+        {feedback && <Feedback message={feedback} />}
+        {error && <Feedback message={error} type='error' />}
+
         {carsFound && carsFound.length > 0 &&
             <section className='carsResult'>
                 {carsFound.map(car => {

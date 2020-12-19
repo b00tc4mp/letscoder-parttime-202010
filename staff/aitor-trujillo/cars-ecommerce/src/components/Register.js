@@ -1,7 +1,12 @@
+import { useState } from 'react'
+import { Link } from "react-router-dom";
 import AppButton from './AppButton'
-import registerUser from '../logic/register-user'
+import Feedback from './Feedback'
+import { registerUser } from '../logic'
 
 function Register({ goToLogin }) {
+    const [error, setError] = useState('')
+
 
     const handleOnSubmit = (event) => {
         event.preventDefault()
@@ -11,14 +16,16 @@ function Register({ goToLogin }) {
         const username = event.target.username.value
         const password = event.target.password.value
 
-        registerUser(username, password, name, surname, (error) => {
-            if (error) return alert(error)
+        try {
+            registerUser(username, password, name, surname, (error) => {
+                if (error) return setError(error)
 
-            goToLogin()
-
-        })
+                goToLogin()
+            })
+        } catch (error) {
+            setError(error.message)
+        }
     }
-
 
     return (
         <section className='container'>
@@ -34,7 +41,9 @@ function Register({ goToLogin }) {
                 <input type="password" name="password" id="password-register" className="form__item form__item--last" />
                 <AppButton text='Register' classes='form__button' />
             </form>
-            <AppButton text='Go to Login' color='highlight' buttonClick={(event) => goToLogin()} />
+            {error && <Feedback message={error} type='error' />}
+            <Link to='/login' ><AppButton text='Go to Login' color='highlight' /></Link>
+
         </section>
     );
 }

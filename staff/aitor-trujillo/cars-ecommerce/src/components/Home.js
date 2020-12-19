@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Nav from './Nav'
 import Search from './Search'
 import AllCars from './AllCars'
 import Profile from './Profile'
+import MyCars from './MyCars'
 
 function Home(props) {
     const [homeView, setHomeView] = useState('search')
@@ -22,12 +23,24 @@ function Home(props) {
 
         setHomeView('profile')
     }
+    const handleMyCarsClick = (event) => {
+        event.preventDefault()
+
+        setHomeView('my-cars')
+    }
 
     return (<>
-        <Nav selected={homeView} searchClick={handleSearchClick} allCarsClick={handleAllCarsClick} profileClick={handleProfileClick} />
+        <Nav
+            selected={homeView}
+            searchClick={handleSearchClick}
+            allCarsClick={handleAllCarsClick}
+            profileClick={handleProfileClick}
+            myCarsClick={handleMyCarsClick}
+        />
         {homeView === 'search' && <Search />}
         {homeView === 'all-cars' && <AllCars />}
         {homeView === 'profile' && <Profile />}
+        {homeView === 'my-cars' && <MyCars />}
     </>);
 }
 

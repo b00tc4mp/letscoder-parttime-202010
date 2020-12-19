@@ -1,30 +1,40 @@
 import { useEffect, useState } from 'react'
-import retrieveUser from '../logic/retrieve-user'
-import updateAvatar from '../logic/update-avatar'
 import Avatar from './Avatar'
+import Feedback from './Feedback'
+import { retrieveUser, updateAvatar } from '../logic'
 
 function Profile(props) {
     const [user, setUser] = useState({ avatar: '' })
     const [refresh, setRefresh] = useState(false)
+    const [error, setError] = useState('')
 
     useEffect(() => {
-        retrieveUser(sessionStorage.token, (error, _user) => {
-            if (error) alert(error)
-            setUser(_user)
-        })
+        try {
+            retrieveUser(sessionStorage.token, (error, _user) => {
+                if (error) return setError(error)
+                setUser(_user)
+            })
+        } catch (error) {
+            setError(error.message)
+        }
     }, [refresh])
 
     const handleOnUpdateAvatar = (newUrl) => {
         if (!newUrl.length) return
 
-        updateAvatar(sessionStorage.token, newUrl, (error) => {
-            if (error) return alert(error)
+        try {
+            updateAvatar(sessionStorage.token, newUrl, (error) => {
+                if (error) return setError(error)
 
-            setRefresh(!refresh)
-        })
+                setRefresh(!refresh)
+            })
+        } catch (error) {
+            setError(error.message)
+        }
     }
 
     return (<section className='container container--donotcenter'>
+        {error && <Feedback message={error} type='error' />}
         <section className='user-display'>
             <div className='user-display__info'>
                 <h1 className='title'>{user.username}</h1>

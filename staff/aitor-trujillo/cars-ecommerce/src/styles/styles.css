@@ -91,18 +91,6 @@ code {
   margin: 5px;
 }
 
-.feedback {
-  font-weight: bold;
-}
-.feedback--error {
-  font-size: 1.2em;
-  color: crimson;
-}
-.feedback--info {
-  font-size: 1.2em;
-  color: white;
-}
-
 .carsResult {
   width: 100%;
   display: flex;
@@ -235,6 +223,19 @@ code {
     width: 250px;
     height: 250px;
   }
+}
+.feedback {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.feedback--error {
+  font-size: 1.2em;
+  color: crimson;
+}
+.feedback--info {
+  font-size: 1.2em;
+  color: white;
 }
 
 /*# sourceMappingURL=styles.css.map */

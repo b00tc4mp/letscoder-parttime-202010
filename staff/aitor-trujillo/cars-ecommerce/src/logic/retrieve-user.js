@@ -15,7 +15,7 @@ function retrieveUser(token, callback) {
             callback(null, user)
 
         } else {
-            const { error } = JSON.parse(error)
+            const { error } = JSON.parse(res)
             callback(error)
         }
     })
