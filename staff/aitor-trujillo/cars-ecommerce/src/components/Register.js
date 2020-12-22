@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import AppButton from './AppButton'
 import Feedback from './Feedback'
 import { registerUser } from '../logic'
@@ -42,7 +42,7 @@ function Register({ goToLogin }) {
                 <AppButton text='Register' classes='form__button' />
             </form>
             {error && <Feedback message={error} type='error' />}
-            <Link to='/login' ><AppButton text='Go to Login' color='highlight' /></Link>
+            <AppButton text='Go to Login' color='highlight' buttonClick={goToLogin} />
 
         </section>
     );

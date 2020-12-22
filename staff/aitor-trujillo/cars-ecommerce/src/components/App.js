@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
   Route,
+  withRouter,
+  Redirect,
+  BrowserRouter as Router
 } from "react-router-dom";
 import Landing from './Landing'
 import Register from './Register'
@@ -10,7 +11,7 @@ import Login from './Login'
 import Home from './Home'
 import { retrieveUser } from '../logic'
 
-function App() {
+function App({ history }) {
   const [token, setToken] = useState('')
 
   useEffect(() => {
@@ -22,35 +23,29 @@ function App() {
       })
   }, [])
 
+  const handleGoToLogin = () => {
+    history.push('/login')
+  }
+
   const handleOnUserLogin = (token) => {
     setToken(token)
     sessionStorage.token = token
   }
 
-  return (<Router>
-    <Switch>
-      <Route exact path="/">
-        {token ? <Home /> : <Landing />}
-      </Route>
-      <Route exact path="/register">
-        <Register />
-      </Route>
-      <Route exact path="/login">
-        <Login onUserLogin={handleOnUserLogin} />
-      </Route>
-      {/* <Route exact path="/home">
-        {sessionStorage.token && }
-      </Route> */}
-    </Switch>
-  </Router>);
+  const handleOnLogout = () => {
+    delete sessionStorage.token
+    setToken('')
+    history.push('/')
+  }
+
+  return (
+    <>
+      <Route exact path="/" render={() => token ? <Redirect to='/home' /> : <Landing />} />
+      <Route exact path="/register" render={() => token ? <Redirect to='/' /> : <Register goToLogin={handleGoToLogin} />} />
+      <Route exact path="/login" render={() => token ? <Redirect to='/' /> : <Login onUserLogin={handleOnUserLogin} />} />
+      <Route exact path="/home" render={() => token ? <Router><Home onLogout={handleOnLogout} /></Router> : <Redirect to='/' />} />
+    </>
+  );
 }
 
-export default App;
-
-
-// return (<>
-//   {view === 'landing' && <Landing goToRegister={handleGoToRegister} goToLogin={handleGoToLogin} />}
-//   {view === 'register' && <Register goToLogin={handleGoToLogin} />}
-//   {view === 'login' && <Login goToRegister={handleGoToRegister} onUserLogin={handleOnUserLogin} />}
-//   {view === 'home' && <Home />}
-// </>);
+export default withRouter(App);
