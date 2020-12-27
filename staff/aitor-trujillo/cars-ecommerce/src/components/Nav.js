@@ -8,6 +8,7 @@ function Nav({ selected, searchClick, allCarsClick, profileClick, myCarsClick })
     }, [selected])
 
     return (
+        // TODO make check active inside className
         <nav className='nav'>
             {active === 'search' ?
                 <a href='/' className='nav__item selected' onClick={searchClick}>Search</a> :

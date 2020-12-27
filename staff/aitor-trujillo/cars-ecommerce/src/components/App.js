@@ -3,24 +3,18 @@ import {
   Route,
   withRouter,
   Redirect,
-  BrowserRouter as Router
+  Switch,
 } from "react-router-dom";
 import Landing from './Landing'
 import Register from './Register'
 import Login from './Login'
 import Home from './Home'
-import { retrieveUser } from '../logic'
 
 function App({ history }) {
   const [token, setToken] = useState('')
 
   useEffect(() => {
-    if (sessionStorage.token)
-      retrieveUser(sessionStorage.token, (error, user) => {
-        if (error) return setToken('')
-
-        setToken(sessionStorage.token)
-      })
+    if (sessionStorage.token) setToken(sessionStorage.token)
   }, [])
 
   const handleGoToLogin = () => {
@@ -39,12 +33,12 @@ function App({ history }) {
   }
 
   return (
-    <>
-      <Route exact path="/" render={() => token ? <Redirect to='/home' /> : <Landing />} />
-      <Route exact path="/register" render={() => token ? <Redirect to='/' /> : <Register goToLogin={handleGoToLogin} />} />
-      <Route exact path="/login" render={() => token ? <Redirect to='/' /> : <Login onUserLogin={handleOnUserLogin} />} />
-      <Route exact path="/home" render={() => token ? <Router><Home onLogout={handleOnLogout} /></Router> : <Redirect to='/' />} />
-    </>
+    <Switch>
+      <Route path="/register" render={() => token ? <Redirect to='/' /> : <Register goToLogin={handleGoToLogin} />} />
+      <Route path="/login" render={() => token ? <Redirect to='/' /> : <Login onUserLogin={handleOnUserLogin} />} />
+      <Route path="/home" render={() => token ? <Home onLogout={handleOnLogout} /> : <Redirect to='/' />} />
+      <Route path="/" render={() => token ? <Redirect to='/home' /> : <Landing />} />
+    </Switch>
   );
 }
 

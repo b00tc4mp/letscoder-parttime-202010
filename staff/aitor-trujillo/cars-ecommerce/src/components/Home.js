@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     withRouter,
     Route,
-    Redirect
+    Redirect,
+    Switch
 } from "react-router-dom";
 
 import Nav from './Nav'
@@ -47,11 +48,14 @@ function Home({ history, onLogout }) {
             profileClick={handleProfileClick}
             myCarsClick={handleMyCarsClick}
         />
-        <Redirect to='/home/search' />
-        <Route exact path='/home/search' render={() => <Search />} />
-        <Route exact path='/home/all-cars' render={() => <AllCars />} />
-        <Route exact path='/home/profile' render={() => <Profile onLogout={onLogout} />} />
-        <Route exact path='/home/my-cars' render={() => <MyCars />} />
+        {/* <Redirect to='/home/search' /> */}
+        <Switch>
+            <Route exact path='/home' render={() => <Redirect to='/home/search' />} />
+            <Route path='/home/search' render={() => <Search />} />
+            <Route path='/home/all-cars' render={() => <AllCars />} />
+            <Route path='/home/profile' render={() => <Profile onLogout={onLogout} />} />
+            <Route path='/home/my-cars' render={() => <MyCars />} />
+        </Switch>
     </>);
 }
 
