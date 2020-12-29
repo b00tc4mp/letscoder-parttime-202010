@@ -3,7 +3,7 @@ import Car from './Car'
 import Feedback from './Feedback'
 import { retrieveAllCars, retrieveUser } from '../logic'
 
-function AllCars(props) {
+function AllCars({ onBuyCar }) {
     const [allCars, setAllCars] = useState([])
     const [myCars, setMyCars] = useState([])
     const [error, setError] = useState('')
@@ -32,7 +32,13 @@ function AllCars(props) {
         {myCars && myCars.length > 0 &&
             <section className='carsResult'>
                 {myCars.map(car => {
-                    return <Car id={car.id} name={car.name} thumbnail={car.thumbnail} price={car.price} />
+                    return <Car
+                        id={car.id}
+                        name={car.name}
+                        thumbnail={car.thumbnail}
+                        price={car.price}
+                        onBuyCar={onBuyCar}
+                    />
                 })}
             </section>
         }
@@ -40,7 +46,13 @@ function AllCars(props) {
         {allCars && allCars.length > 0 &&
             <section className='carsResult'>
                 {allCars.map(car => {
-                    return <Car id={car.id} name={car.name} thumbnail={car.thumbnail} price={car.price} />
+                    return <Car
+                        id={car.id}
+                        name={car.name}
+                        thumbnail={car.thumbnail}
+                        price={car.price}
+                        onBuyCar={onBuyCar}
+                    />
                 })}
             </section>
         }

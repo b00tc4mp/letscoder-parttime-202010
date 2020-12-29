@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import AppButton from './AppButton'
 import Car from './Car'
-import { uploadCar, retrieveUser } from '../logic'
+import { uploadCar, retrieveUser, deleteCar } from '../logic'
 import Feedback from './Feedback'
 
-function MyCars(props) {
+function MyCars({ onBuyCar }) {
     const [myCars, setMyCars] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [error, setError] = useState('')
@@ -15,7 +15,8 @@ function MyCars(props) {
                 if (error) return setError(error)
                 const { myCars: _myCars } = user
 
-                setMyCars(_myCars)
+                if (_myCars) setMyCars(_myCars)
+                setError('')
             })
         } catch (error) {
             setError(error.message)
@@ -24,21 +25,33 @@ function MyCars(props) {
 
     const handleUploadCar = (event) => {
         event.preventDefault()
-
         const carsArray = myCars
 
         const thumbnail = event.target.thumbnail.value
         const name = event.target.name.value
         const price = event.target.price.value
 
-        if (!thumbnail || !name || !price) return alert('all inputs are required')
-
-        carsArray.push({ thumbnail, name, price, id: carsArray.length + 100 })
-
         try {
-            uploadCar(sessionStorage.token, carsArray, (error) => {
+            uploadCar(sessionStorage.token, thumbnail, name, price, carsArray, (error) => {
                 if (error) return setError(error)
 
+                setError('')
+                setRefresh(!refresh)
+            })
+        } catch (error) {
+            setError(error.message)
+        }
+    }
+
+    const handleOnDelete = (event, id) => {
+        event.preventDefault()
+        const carsArray = myCars
+
+        try {
+            deleteCar(sessionStorage.token, id, carsArray, (error) => {
+                if (error) return setError(error)
+
+                setError('')
                 setRefresh(!refresh)
             })
         } catch (error) {
@@ -57,7 +70,17 @@ function MyCars(props) {
 
         {myCars.length > 0 &&
             <section className='carsResult'>
-                {myCars.map(car => <Car id={car.id} thumbnail={car.thumbnail} name={car.name} price={car.price} />)}
+                {myCars.map(car =>
+                    <Car
+                        id={car.id}
+                        thumbnail={car.thumbnail}
+                        name={car.name}
+                        price={car.price}
+                        showRemoveButton={true}
+                        onDelete={handleOnDelete}
+                        onBuyCar={onBuyCar}
+                    />
+                )}
             </section>
         }
     </section>);

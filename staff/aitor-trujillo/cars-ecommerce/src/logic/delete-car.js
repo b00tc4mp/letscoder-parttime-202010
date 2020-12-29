@@ -1,12 +1,12 @@
 import call from './utils/call'
 
-function uploadCar(token, thumbnail, name, price, carsArray, callback) {
+function deleteCar(token, id, carsArray, callback) {
     if (!token) throw new Error('invalid token')
-    if (!thumbnail || !name || !price) throw new Error('all inputs are required')
+    if (typeof id !== 'string') throw new Error('id must be a string')
 
-    const id = carsArray.length ? Number(carsArray[carsArray.length - 1].id) + 1 : 100
+    const carIndex = carsArray.findIndex(car => car.id === id)
 
-    carsArray.push({ thumbnail, name, price: Number(price), id: id.toString() })
+    carsArray.splice(carIndex, 1)
 
     const method = 'PATCH'
     const url = 'https://b00tc4mp.herokuapp.com/api/v2/users/'
@@ -17,9 +17,10 @@ function uploadCar(token, thumbnail, name, price, carsArray, callback) {
         if (status === 204) {
             callback()
         } else {
-            callback(JSON.parse(res).error)
+            const error = JSON.parse(res)
+            callback(error)
         }
     })
 }
 
-export default uploadCar
+export default deleteCar

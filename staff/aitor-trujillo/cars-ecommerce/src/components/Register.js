@@ -1,5 +1,4 @@
 import { useState } from 'react'
-// import { Link } from "react-router-dom";
 import AppButton from './AppButton'
 import Feedback from './Feedback'
 import { registerUser } from '../logic'

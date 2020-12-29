@@ -5,7 +5,7 @@ import Feedback from './Feedback'
 import { searchCars } from '../logic'
 
 
-function Search(props) {
+function Search({ onBuyCar }) {
     const [carsFound, setCarsFound] = useState([])
     const [error, setError] = useState('')
     const [feedback, setFeedback] = useState('')
@@ -41,7 +41,13 @@ function Search(props) {
         {carsFound && carsFound.length > 0 &&
             <section className='carsResult'>
                 {carsFound.map(car => {
-                    return <Car id={car.id} name={car.name} thumbnail={car.thumbnail} price={car.price} />
+                    return <Car
+                        id={car.id}
+                        name={car.name}
+                        thumbnail={car.thumbnail}
+                        price={car.price}
+                        onBuyCar={onBuyCar}
+                    />
                 })}
             </section>
         }

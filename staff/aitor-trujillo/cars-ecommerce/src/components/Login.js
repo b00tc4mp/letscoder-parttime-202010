@@ -1,13 +1,10 @@
-
 import { useState } from 'react'
-import { Link, useHistory } from "react-router-dom";
 import AppButton from './AppButton'
 import { authenticateUser } from '../logic'
 import Feedback from './Feedback'
 
-function Login({ onUserLogin }) {
+function Login({ onUserLogin, goToRegister }) {
     const [error, setError] = useState('')
-    let history = useHistory()
 
     const handleOnSubmit = (event) => {
         event.preventDefault()
@@ -18,7 +15,7 @@ function Login({ onUserLogin }) {
         try {
             authenticateUser(username, password, (error, token) => {
                 if (error) return setError(error)
-                history.push("/")
+
                 onUserLogin(token)
             })
         } catch (error) {
@@ -38,7 +35,7 @@ function Login({ onUserLogin }) {
                 <AppButton text='Login' classes='form__button' />
             </form>
             {error && <Feedback message={error} type='error' />}
-            <Link to='/register' ><AppButton text='Go to Register' color='highlight' /></Link>
+            <AppButton text='Go to Register' color='highlight' buttonClick={goToRegister} />
         </section>
     );
 }

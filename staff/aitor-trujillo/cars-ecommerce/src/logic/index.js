@@ -5,6 +5,8 @@ import retrieveAllCars from './retrieve-all-cars'
 import searchCars from './search-cars'
 import updateAvatar from './update-avatar'
 import uploadCar from './upload-car'
+import deleteCar from './delete-car'
+
 
 export {
     authenticateUser,
@@ -13,7 +15,8 @@ export {
     retrieveAllCars,
     searchCars,
     updateAvatar,
-    uploadCar
+    uploadCar,
+    deleteCar
 }
 
 

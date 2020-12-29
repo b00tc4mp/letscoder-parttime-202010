@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function Nav({ location, searchClick, allCarsClick, profileClick, myCarsClick }) {
+function Nav({ cartValue, location, searchClick, allCarsClick, profileClick, myCarsClick }) {
     const [active, setActive] = useState('search')
 
     useEffect(() => {
@@ -13,6 +13,9 @@ function Nav({ location, searchClick, allCarsClick, profileClick, myCarsClick })
             <a href='/' className={`nav__item ${active === 'all-cars' ? 'selected' : ''}`} onClick={allCarsClick}>All Cars</a>
             <a href='/' className={`nav__item ${active === 'profile' ? 'selected' : ''}`} onClick={profileClick}>Profile</a>
             <a href='/' className={`nav__item ${active === 'my-cars' ? 'selected' : ''}`} onClick={myCarsClick}>My Cars</a>
+            <div className='cart nav__item'>
+                {cartValue}€ 💰
+            </div>
         </nav >
     );
 }

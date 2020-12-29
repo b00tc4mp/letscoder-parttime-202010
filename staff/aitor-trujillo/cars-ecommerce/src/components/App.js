@@ -21,6 +21,10 @@ function App({ history }) {
     history.push('/login')
   }
 
+  const handleGoToRegister = () => {
+    history.push('/register')
+  }
+
   const handleOnUserLogin = (token) => {
     setToken(token)
     sessionStorage.token = token
@@ -28,14 +32,15 @@ function App({ history }) {
 
   const handleOnLogout = () => {
     delete sessionStorage.token
+    delete sessionStorage.cart
     setToken('')
     history.push('/')
   }
 
   return (
     <Switch>
-      <Route path="/register" render={() => token ? <Redirect to='/' /> : <Register goToLogin={handleGoToLogin} />} />
-      <Route path="/login" render={() => token ? <Redirect to='/' /> : <Login onUserLogin={handleOnUserLogin} />} />
+      <Route path="/register" render={() => token ? <Redirect to='/home' /> : <Register goToLogin={handleGoToLogin} />} />
+      <Route path="/login" render={() => token ? <Redirect to='/home' /> : <Login onUserLogin={handleOnUserLogin} goToRegister={handleGoToRegister} />} />
       <Route path="/home" render={() => token ? <Home onLogout={handleOnLogout} /> : <Redirect to='/' />} />
       <Route path="/" render={() => token ? <Redirect to='/home' /> : <Landing />} />
     </Switch>
