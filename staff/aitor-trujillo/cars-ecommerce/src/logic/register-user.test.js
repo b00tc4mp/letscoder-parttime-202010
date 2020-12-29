@@ -1,66 +1,128 @@
-console.log('register user test') // title
-console.log('should register a valid user') // happy path
+import registerUser from './register-user'
+import call from './utils/call'
 
-let username = 'testing-u' + Math.random()
-let password = 'testing-p' + Math.random()
-let name = 'testing-n' + Math.random()
-let surname = 'testing-s' + Math.random()
+describe('registerUser TEST', () => {
+    // BEFORE EACH if needed
+    test('should call callback on valid user', () => { // HAPPY
 
-registerUser(username, password, name, surname, function (error) {
+        let username = 'testing-u' + Math.random()
+        let password = 'testing-p' + Math.random()
+        let name = 'testing-n' + Math.random()
+        let surname = 'testing-s' + Math.random()
 
-    console.assert(error === undefined, 'error should not exist')
+        const callback = jest.fn()
+        registerUser(username, password, name, surname, callback)
 
-    const method = 'POST'
-    const url = 'https://b00tc4mp.herokuapp.com/api/v2/users/auth'
-    const headers = { 'Content-Type': 'application/json' }
-    const body = {
-        username, password
-    }
-
-    call(method, url, headers, JSON.stringify(body), function (status, res) {
-        if (status === 201) {
-            const { token } = JSON.parse(res)
-            console.assert(token.length > 0, 'token should exist for registered user')
-            console.assert(typeof token === 'string', 'token should be string')
-        } else {
-            const { error } = JSON.parse(res)
-            console.assert(!error, 'error should not exist')
-        }
+        setTimeout(() => {
+            expect(callback).toHaveBeenCalled()
+        }, 1000)
     })
-})
 
-console.log('should not register already registered user') // unhappy path
+    test('should register user for a valid user data', () => { // HAPPY
 
+        let username = 'testing-u' + Math.random()
+        let password = 'testing-p' + Math.random()
+        let name = 'testing-n' + Math.random()
+        let surname = 'testing-s' + Math.random()
 
-username = 'testing-u' + Math.random()
-password = 'testing-p' + Math.random()
+        registerUser(username, password, name, surname, function (error) {
 
-const method = 'POST'
-const url = 'https://b00tc4mp.herokuapp.com/api/v2/users/'
-const headers = { 'Content-Type': 'application/json' }
-const body = {
-    username, password
-}
+            expect(error).toBeUndefined()
 
-call(method, url, headers, JSON.stringify(body), function (status, res) {
-    if (status === 201) {
+            const method = 'POST'
+            const url = 'https://b00tc4mp.herokuapp.com/api/v2/users/auth'
+            const headers = { 'Content-Type': 'application/json' }
+            const body = {
+                username, password
+            }
+
+            call(method, url, headers, JSON.stringify(body), function (status, res) {
+                if (status === 201) {
+                    const { token } = JSON.parse(res)
+                    expect(token).toBeDefined()
+                    expect(token).toBeInstanceOf(String)
+                    expect(token).toHaveLength(172)
+                } else {
+                    const { error } = JSON.parse(res)
+                    expect(error).toBeUndefined()
+                }
+            })
+        })
+    })
+
+    test('should not register already registered user', () => { // UNHAPPY ASYNC
+
+        const username = 'testing-u' + Math.random()
+        const password = 'testing-p' + Math.random()
+
+        const method = 'POST'
+        const url = 'https://b00tc4mp.herokuapp.com/api/v2/users/'
+        const headers = { 'Content-Type': 'application/json' }
+        const body = {
+            username, password
+        }
+
+        call(method, url, headers, JSON.stringify(body), function (status, res) {
+            if (status === 201) {
+                const password = 'testing-p' + Math.random()
+                const name = 'testing-n' + Math.random()
+                const surname = 'testing-s' + Math.random()
+
+                registerUser(username, password, name, surname, function (error) {
+                    expect(error).toBeDefined()
+                    expect(error).toBe(`user with username "${username}" already exists`)
+
+                })
+            } else {
+                const { error } = JSON.parse(res)
+                expect(error).toBeUndefined()
+            }
+        })
+    })
+
+    test('should fail if username is undefined', () => { // UNHAPPY SYNC
+        const username = undefined
         const password = 'testing-p' + Math.random()
         const name = 'testing-n' + Math.random()
         const surname = 'testing-s' + Math.random()
 
-        registerUser(username, password, name, surname, function (error) {
-            console.assert(error.length > 0, 'error should exist')
-            console.assert(error === `user with username "${username}" already exists`, 'should show existing user error')
+        expect(() => {
+            registerUser(username, password, name, surname)
+        }).toThrow()
 
-        })
-    } else {
-        const { error } = JSON.parse(res)
-        console.assert(!error, 'error should not exist')
-    }
-})
+        expect(() => {
+            registerUser(username, password, name, surname)
+        }).toThrowError('username is required')
+    })
 
+    test('should fail if password is undefined', () => { // UNHAPPY SYNC
+        const username = 'testing-u' + Math.random()
+        const password = undefined
+        const name = 'testing-n' + Math.random()
+        const surname = 'testing-s' + Math.random()
 
+        expect(() => {
+            registerUser(username, password, name, surname)
+        }).toThrow()
 
+        expect(() => {
+            registerUser(username, password, name, surname)
+        }).toThrowError('password is required')
+    })
 
+    test('should fail if password length is less than 3', () => { // UNHAPPY SYNC
+        const username = 'testing-u' + Math.random()
+        const password = 'ab'
+        const name = 'testing-n' + Math.random()
+        const surname = 'testing-s' + Math.random()
 
+        expect(() => {
+            registerUser(username, password, name, surname)
+        }).toThrow()
 
+        expect(() => {
+            registerUser(username, password, name, surname)
+        }).toThrowError('password must be at least 3 caracters')
+    })
+
+})     

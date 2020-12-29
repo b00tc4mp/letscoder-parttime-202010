@@ -1,7 +1,7 @@
 import call from './utils/call'
 
 function registerUser(username, password, name, surname, callback) {
-    if (!username) throw new TypeError('email is required')
+    if (!username) throw new TypeError('username is required')
     if (!password) throw new TypeError('password is required')
     if (password.length < 3) throw new TypeError('password must be at least 3 caracters')
 
@@ -21,7 +21,6 @@ function registerUser(username, password, name, surname, callback) {
             callback(error)
         }
     })
-
 }
 
 export default registerUser
