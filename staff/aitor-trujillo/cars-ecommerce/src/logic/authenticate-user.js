@@ -16,8 +16,8 @@ function authenticateUser(username, password, callback) {
             callback(null, token)
         } else {
             const { error } = JSON.parse(res)
-            callback(error)
 
+            callback(error)
         }
     })
 }
